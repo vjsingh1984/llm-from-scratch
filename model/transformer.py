@@ -420,15 +420,24 @@ class GPTModel(nn.Module):
         Returns:
             Total number of parameters
         """
-        # Get all parameters
+        # Get all parameters and count recursively
+        def count_params_recursive(obj):
+            if isinstance(obj, dict):
+                total = 0
+                for value in obj.values():
+                    total += count_params_recursive(value)
+                return total
+            elif isinstance(obj, list):
+                total = 0
+                for item in obj:
+                    total += count_params_recursive(item)
+                return total
+            else:
+                # It's an array, count its size
+                return obj.size
+
         params = self.parameters()
-
-        # Count total parameters
-        total = 0
-        for name, param in params.items():
-            total += param.size
-
-        return total
+        return count_params_recursive(params)
 
     def get_num_params(self, non_embedding: bool = False) -> int:
         """

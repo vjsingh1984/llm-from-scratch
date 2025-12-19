@@ -177,30 +177,52 @@ def get_lr_schedule(
         raise ValueError(f"Unknown schedule type: {schedule_type}")
 
 
-def clip_gradients(grads: dict, max_norm: float) -> dict:
+def clip_gradients(grads: dict, max_norm: float) -> tuple:
     """
     Clip gradients by global norm.
 
     Args:
-        grads: Dictionary of gradients
+        grads: Dictionary of gradients (possibly nested)
         max_norm: Maximum norm for clipping
 
     Returns:
-        Clipped gradients
+        Tuple of (clipped_gradients, total_norm)
     """
-    # Compute global norm
-    total_norm = 0.0
-    for grad in grads.values():
-        if grad is not None:
-            total_norm += mx.sum(grad * grad).item()
+    # Compute global norm recursively
+    def compute_norm_recursive(obj):
+        if isinstance(obj, dict):
+            total = 0.0
+            for value in obj.values():
+                total += compute_norm_recursive(value)
+            return total
+        elif isinstance(obj, list):
+            total = 0.0
+            for item in obj:
+                total += compute_norm_recursive(item)
+            return total
+        elif obj is not None:
+            # It's an array
+            return mx.sum(obj * obj).item()
+        else:
+            return 0.0
 
-    total_norm = math.sqrt(total_norm)
+    # Clip gradients recursively
+    def clip_recursive(obj, clip_coef):
+        if isinstance(obj, dict):
+            return {k: clip_recursive(v, clip_coef) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [clip_recursive(item, clip_coef) for item in obj]
+        elif obj is not None:
+            return obj * clip_coef
+        else:
+            return None
+
+    total_norm = math.sqrt(compute_norm_recursive(grads))
 
     # Clip if necessary
     if total_norm > max_norm:
         clip_coef = max_norm / (total_norm + 1e-6)
-        grads = {k: v * clip_coef if v is not None else None
-                 for k, v in grads.items()}
+        grads = clip_recursive(grads, clip_coef)
 
     return grads, total_norm
 

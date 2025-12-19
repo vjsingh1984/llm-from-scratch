@@ -356,14 +356,17 @@ class Trainer:
 
                     # Generate samples
                     if self.config.generate_samples:
-                        print("\nGenerated samples:")
-                        samples = self.generate_samples(
-                            self.config.num_samples,
-                            self.config.max_gen_tokens
-                        )
-                        for i, sample in enumerate(samples):
-                            print(f"  {i+1}. {sample[:100]}...")
-                        print()
+                        try:
+                            print("\nGenerated samples:")
+                            samples = self.generate_samples(
+                                self.config.num_samples,
+                                self.config.max_gen_tokens
+                            )
+                            for i, sample in enumerate(samples):
+                                print(f"  {i+1}. {sample[:100]}...")
+                            print()
+                        except Exception as e:
+                            print(f"Generation failed: {e}")
 
                 # Checkpointing
                 if self.step % self.config.save_interval == 0:
