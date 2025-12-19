@@ -48,48 +48,65 @@ llm-from-scratch/
 
 ## Learning Roadmap
 
-### Phase 1: Foundations (Current)
+### Phase 1: Foundations ✅
 - [x] Project setup
-- [ ] Understanding tokenization
-- [ ] Implementing BPE tokenizer
-- [ ] Building vocabulary from sample data
+- [x] Understanding tokenization
+- [x] Implementing BPE tokenizer
+- [x] Building vocabulary from sample data
 
-### Phase 2: Model Architecture
-- [ ] Embeddings and positional encoding
-- [ ] Multi-head self-attention
-- [ ] Transformer blocks
-- [ ] Complete GPT-style model (50M params)
+### Phase 2: Model Architecture ✅
+- [x] Embeddings and positional encoding (learned, sinusoidal, RoPE)
+- [x] Multi-head self-attention with causal masking
+- [x] Transformer blocks with Pre-LayerNorm
+- [x] Complete GPT-style model (50M-3B params)
+- [x] Grouped Query Attention support
 
-### Phase 3: Training
-- [ ] Data preprocessing pipeline
-- [ ] Training loop with AdamW optimizer
-- [ ] Learning rate scheduling
-- [ ] Gradient accumulation for larger models
-- [ ] Mixed precision training
+### Phase 3: Training ✅
+- [x] Data preprocessing pipeline
+- [x] Training loop with AdamW optimizer
+- [x] Learning rate scheduling (warmup + cosine decay)
+- [x] Gradient clipping and accumulation
+- [x] Automatic checkpointing
+- [x] MLX mixed precision support
 
-### Phase 4: Scaling & Evaluation
-- [ ] Train 124M parameter model (GPT-2 small)
-- [ ] Text generation with sampling strategies
-- [ ] Evaluation metrics (perplexity, loss curves)
-- [ ] Fine-tuning experiments
+### Phase 4: Scaling & Evaluation ✅
+- [x] Text generation with sampling strategies
+- [x] Generation script with interactive mode
+- [x] Training scripts for all model sizes
+- [x] M1 Max optimization guidelines
 
-### Phase 5: Advanced Topics
+### Phase 5: Advanced Topics (Next)
 - [ ] Mixture of Experts (MoE) architecture
 - [ ] Sparse routing mechanisms
 - [ ] Comparing dense vs MoE performance
-- [ ] Scaling to 1-3B parameters
+- [ ] Scaling experiments
 
 ## Quick Start
 
 ```bash
-# Install dependencies
+# 1. Install dependencies
 pip install -r requirements.txt
 
-# Verify MLX installation
-python -c "import mlx.core as mx; print(mx.metal.is_available())"
+# 2. Download data
+python scripts/download_data.py --num-samples 10000
 
-# Follow documentation in order
-open docs/00-OVERVIEW.md
+# 3. Train tokenizer
+python scripts/train_tokenizer.py --vocab-size 8000
+
+# 4. Train model
+python scripts/train.py \
+    --model-size tiny \
+    --batch-size 16 \
+    --max-steps 10000
+
+# 5. Generate text
+python scripts/generate.py \
+    --checkpoint checkpoints/best.npz \
+    --prompt "Once upon a time" \
+    --interactive
+
+# Or test the model architecture
+python scripts/test_model.py
 ```
 
 ## Resources
