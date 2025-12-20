@@ -28,26 +28,67 @@ from tqdm import tqdm
 GITHUB_REPOS = [
     # DevOps & Infrastructure
     "hashicorp/terraform",
+    "hashicorp/consul",
+    "hashicorp/vault",
+    "hashicorp/nomad",
     "ansible/ansible",
     "kubernetes/kubernetes",
     "docker/docker-ce",
+    "docker/compose",
     "helm/helm",
+    "prometheus/prometheus",
+    "grafana/grafana",
+    "netdata/netdata",
 
     # System administration
     "ohmyzsh/ohmyzsh",
     "nvm-sh/nvm",
     "rbenv/rbenv",
     "pyenv/pyenv",
+    "Homebrew/brew",
+    "asdf-vm/asdf",
 
     # CI/CD
     "actions/runner",
     "jenkins-x/jx",
     "drone/drone",
+    "concourse/concourse",
+    "circleci/circleci-cli",
+    "travis-ci/travis-build",
+
+    # Databases & Storage
+    "mysql/mysql-server",
+    "postgres/postgres",
+    "mongodb/mongo",
+    "redis/redis",
+    "elastic/elasticsearch",
+
+    # Web servers & proxies
+    "nginx/nginx",
+    "apache/httpd",
+    "traefik/traefik",
+    "envoyproxy/envoy",
+
+    # Cloud & Orchestration
+    "aws/aws-cli",
+    "Azure/azure-cli",
+    "GoogleCloudPlatform/cloud-sdk-docker",
+    "openstack/openstack",
+
+    # Monitoring & Logging
+    "logstash/logstash",
+    "fluentd/fluentd",
+    "getsentry/sentry",
+
+    # Security
+    "fail2ban/fail2ban",
+    "CISOfy/lynis",
 
     # Utilities
     "dylanaraps/pure-bash-bible",
     "awesome-lists/awesome-bash",
     "alexanderepstein/Bash-Snippets",
+    "jlevy/the-art-of-command-line",
 ]
 
 

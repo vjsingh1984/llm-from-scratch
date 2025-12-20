@@ -170,37 +170,42 @@ Dataset Statistics:
 
 ### 3.2 Bash Scripts Corpus
 
-Creating production-quality bash scripts for code training...
+Downloading production bash scripts from major GitHub repositories...
 
 ```bash
-python3 << 'EOF'
-# Generate diverse bash scripts covering:
-# - System Administration
-# - DevOps & Docker
-# - Database Management
-# - Monitoring & Logging
-# - Networking
-# - Security & CI/CD
-EOF
+python3 scripts/download_bash_corpus.py --output data/bash
 ```
+
+**Sources (46 GitHub Repositories):**
+- **DevOps & Infrastructure**: Terraform, Consul, Vault, Nomad, Ansible, Kubernetes, Docker, Helm, Prometheus, Grafana, Netdata
+- **System Admin**: ohmyzsh, nvm, rbenv, pyenv, Homebrew, asdf
+- **CI/CD**: GitHub Actions, Jenkins-X, Drone, Concourse, Travis CI
+- **Databases**: MySQL, PostgreSQL, MongoDB, Redis, Elasticsearch
+- **Web Servers**: NGINX, Apache, Traefik, Envoy
+- **Cloud**: AWS CLI, Azure CLI, Google Cloud
+- **Security**: fail2ban, Lynis
 
 **Output:**
 ```
-Bash Scripts Corpus Statistics:
-  Scripts: 12
-  Total lines: 403
-  Total words: 1,140
-  Estimated tokens: 1,482
-  Size: 8.26 KB
-  Categories: sysadmin, docker, deploy, db, mysql, monitor, log, check, network, security, ci
+Cloning 46 GitHub repositories...
+✓ Extracted 2,641 raw scripts
+✓ 1,924 valid scripts
+✓ 1,767 unique scripts (after deduplication)
+
+Corpus Statistics:
+  Scripts: 1,767
+  Total lines: 173,330
+  Total words: 650,001
+  Estimated tokens: 845,001
+  Size: 5.35 MB
+  Avg lines/script: 98
 ```
 
-✅ **Status**: Complete! Production-quality scripts created
-- 12 diverse, real-world bash scripts
-- Categories: System Admin, DevOps, Database, Monitoring, Security
+✅ **Status**: Complete! Production-scale corpus downloaded
+- 1,767 unique, real-world bash scripts from major OSS projects
+- 570x more tokens than initial demo set
+- Categories: HashiCorp tools, Kubernetes, Docker, databases, cloud CLIs, monitoring, security
 - Ready for code fine-tuning
-
-**Note**: For full production training, corpus would include 10K+ scripts from GitHub. This demonstration set shows the pipeline with high-quality examples.
 
 ---
 
@@ -211,10 +216,70 @@ Bash Scripts Corpus Statistics:
 | Dataset | Documents | Words | Tokens (est) | Size |
 |---------|-----------|-------|--------------|------|
 | Language (TinyStories) | 2,119,719 | 371.7M | 483.2M | 1.77 GB |
-| Code (Bash) | 12 | 1,140 | 1,482 | 8.26 KB |
-| **Total** | **2,119,731** | **371.7M** | **483.2M** | **1.77 GB** |
+| Code (Bash) | 1,767 | 650,001 | 845,001 | 5.35 MB |
+| **Total** | **2,121,486** | **372.4M** | **484.0M** | **1.78 GB** |
 
 ✅ All data downloaded and ready for tokenization!
+
+**Corpus Highlights:**
+- **Language**: 2.1M GPT-4 generated stories for foundational language understanding
+- **Code**: 1,767 production scripts from 44 major OSS projects (Kubernetes, Terraform, Docker, AWS, etc.)
+- **Total Training Data**: 484M tokens across language and code domains
+- **Context Window**: 4096 tokens (8x larger than basic version)
+
+---
+
+## Step 5: Tokenizer Training ✅
+
+### 5.1 Train BPE Tokenizer
+
+Training Byte-Pair Encoding tokenizer on combined language + code corpus...
+
+```bash
+python3 scripts/train_tokenizer.py
+```
+
+**Output:**
+```
+Training BPE Tokenizer
+Vocabulary size: 32,000
+
+Collecting training data...
+✓ Loaded 11,242,600 language examples
+✓ Loaded 1,779 code examples
+
+Total training examples: 11,244,379
+  Language: 11,242,600 (100.0%)
+  Code: 1,779 (0.0%)
+
+Training tokenizer...
+✓ Tokenizer training complete!
+
+Tokenizer Statistics:
+  Vocabulary size: 32,000
+  Training examples: 11,244,379
+  Special tokens: <PAD>, <UNK>, <BOS>, <EOS>
+```
+
+**Test Cases:**
+```python
+Input:  "Hello, world! This is a test."
+Tokens: ['Hello', ',', 'world', '!', 'This', 'is', 'a', 'test', '.']
+IDs:    [1239, 17, 1127, 6, 964, 253, 70, 1873, 19]
+
+Input:  "#!/bin/bash\necho \"Starting deployment...\""
+Tokens: ['#!/', 'bin', '/', 'bash', 'echo', '"', 'Starting', 'deployment', '..."']
+IDs:    [6952, 2772, 20, 6699, 3181, 7, 17790, 14300, 6323]
+
+Input:  "for i in range(10):"
+Tokens: ['for', 'i', 'in', 'range', '(', '10', '):']
+IDs:    [320, 78, 240, 7502, 13, 5750, 12964]
+```
+
+✅ **Status**: Tokenizer training complete!
+- 32K vocabulary trained on 11.2M examples
+- Handles both natural language and code
+- Saved to `data/tokenizer/tokenizer.json`
 
 ---
 
@@ -224,9 +289,10 @@ Bash Scripts Corpus Statistics:
 2. ✅ Verify MLX installation
 3. ✅ Test model architecture
 4. ✅ Download language data (2.1M documents)
-5. ✅ Create bash scripts corpus
-6. **→ Tokenize datasets** (next)
-7. Train language model
-8. Fine-tune on code
-9. Generate and evaluate
+5. ✅ Download bash scripts corpus (1,767 scripts)
+6. ✅ Train BPE tokenizer (32K vocab)
+7. **→ Prepare and tokenize datasets** (next)
+8. Train language model
+9. Fine-tune on code
+10. Generate and evaluate
 

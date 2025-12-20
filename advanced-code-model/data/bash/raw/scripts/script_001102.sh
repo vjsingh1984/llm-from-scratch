@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "export const svg = (function () {var icon_paths = {";
+
+for file in $1/*.svg;
+do
+    sed 's/^.* id="mdi-\([^"]*\)" .*path d="\([^"]*\)".*$/"\1":"\2",/' $file;
+done;
+
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+sed 's/^.* id="mdi-\([^"]*\)" .*path d="\([^"]*\)".*$/"\1":"\2",/' "$SCRIPT_DIR/concourse-ci-mdi.svg"
+
+echo '"no-icon":""};';
+echo "var svg = function(icon, id) {";
+echo "var path = icon_paths[icon];if (typeof path === 'undefined') {path = icon_paths['help-circle-outline'];};";
+echo "return '<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" id=\"' + id + '\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"' + path + '\" /></svg>';};";
+echo "return svg;})();";

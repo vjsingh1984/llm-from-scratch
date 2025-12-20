@@ -1,22 +1,10 @@
 {
-  "num_scripts": 12,
-  "total_characters": 8455,
-  "total_lines": 403,
-  "total_words": 1140,
-  "estimated_tokens": 1482,
-  "size_kb": 8.2568359375,
-  "categories": [
-    "ci",
-    "deploy.sh",
-    "check",
-    "monitor",
-    "mysql",
-    "security",
-    "db",
-    "sysadmin",
-    "log",
-    "network",
-    "user",
-    "docker"
-  ]
+  "num_scripts": 1767,
+  "total_characters": 5606224,
+  "total_lines": 173330,
+  "total_words": 650001,
+  "estimated_tokens": 845001,
+  "size_mb": 5.3465118408203125,
+  "avg_lines_per_script": 98.09281267685343,
+  "avg_size_bytes": 3172.7357102433502
 }

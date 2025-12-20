@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -o errexit
+
+main() {
+  ./script/get-latest-go &
+  cd "$(dirname "$0")/.."
+  : "${PORT:=5000}"
+  : "${RACK_ENV:=development}"
+
+  local cmd=(
+    bundle exec je puma -I lib
+    -p "${PORT}"
+    -t "${PUMA_MIN_THREADS:-8}:${PUMA_MAX_THREADS:-12}"
+    -w "${PUMA_WORKERS:-2}"
+  )
+
+  if [[ -f public.tar.bz2 && ! -d public ]]; then
+    tar -xf public.tar.bz2
+  fi
+
+  if [[ -f BUILD_SLUG_COMMIT ]]; then
+    export BUILD_SLUG_COMMIT
+    BUILD_SLUG_COMMIT=$(cat ./BUILD_SLUG_COMMIT)
+  fi
+
+  if [[ "${RACK_ENV}" == development ]] &&
+    [[ ! -f /.dockerenv ]] &&
+    [[ ! "${DISABLE_RERUN}" ]]; then
+    cmd=(bundle exec rerun -p '**/*.{rb,ru}' -- "${cmd[@]}")
+  fi
+
+  echo "----> ${cmd[*]}"
+  exec "${cmd[@]}"
+}
+
+main "${@}"

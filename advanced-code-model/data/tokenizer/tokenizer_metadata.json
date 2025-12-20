@@ -1,0 +1,12 @@
+{
+  "vocab_size": 32000,
+  "training_examples": 11244379,
+  "language_examples": 11242600,
+  "code_examples": 1779,
+  "special_tokens": [
+    "<PAD>",
+    "<UNK>",
+    "<BOS>",
+    "<EOS>"
+  ]
+}
