@@ -1,0 +1,13 @@
+{
+  "total_scripts": 100,
+  "categories": {
+    "system_admin": 20,
+    "devops": 20,
+    "database": 15,
+    "networking": 15,
+    "monitoring": 15,
+    "deployment": 15
+  },
+  "total_lines": 6500,
+  "avg_lines_per_script": 65
+}

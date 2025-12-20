@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700">
+  <!-- Title -->
+  <text x="450" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">
+    How Tokenization Works (BPE)
+  </text>
+  <text x="450" y="55" font-size="14" text-anchor="middle" fill="#666">
+    Converting text into numbers the model can understand
+  </text>
+
+  <!-- Step 1: Input Text -->
+  <g id="step1">
+    <rect x="50" y="90" width="800" height="100" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="2" rx="8"/>
+    <text x="80" y="115" font-size="16" font-weight="bold" fill="#4A148C">
+      Step 1: Input Text
+    </text>
+    <rect x="80" y="130" width="740" height="40" fill="#E1BEE7" stroke="#7B1FA2" stroke-width="1" rx="5"/>
+    <text x="450" y="157" font-size="18" text-anchor="middle" font-family="monospace" fill="#333">
+      #!/bin/bash
+    </text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 450 195 L 450 225" stroke="#7B1FA2" stroke-width="3" fill="none" marker-end="url(#arrowpurple)"/>
+
+  <!-- Step 2: Character Split -->
+  <g id="step2">
+    <rect x="50" y="230" width="800" height="120" fill="#E8F5E9" stroke="#388E3C" stroke-width="2" rx="8"/>
+    <text x="80" y="255" font-size="16" font-weight="bold" fill="#1B5E20">
+      Step 2: Split into Characters
+    </text>
+    <text x="80" y="275" font-size="12" fill="#666">
+      Break text into individual characters
+    </text>
+
+    <!-- Characters -->
+    <g id="characters">
+      <rect x="80" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="97" y="315" font-size="16" text-anchor="middle" font-family="monospace">#</text>
+
+      <rect x="125" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="142" y="315" font-size="16" text-anchor="middle" font-family="monospace">!</text>
+
+      <rect x="170" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="187" y="315" font-size="16" text-anchor="middle" font-family="monospace">/</text>
+
+      <rect x="215" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="232" y="315" font-size="16" text-anchor="middle" font-family="monospace">b</text>
+
+      <rect x="260" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="277" y="315" font-size="16" text-anchor="middle" font-family="monospace">i</text>
+
+      <rect x="305" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="322" y="315" font-size="16" text-anchor="middle" font-family="monospace">n</text>
+
+      <rect x="350" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="367" y="315" font-size="16" text-anchor="middle" font-family="monospace">/</text>
+
+      <rect x="395" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="412" y="315" font-size="16" text-anchor="middle" font-family="monospace">b</text>
+
+      <rect x="440" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="457" y="315" font-size="16" text-anchor="middle" font-family="monospace">a</text>
+
+      <rect x="485" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="502" y="315" font-size="16" text-anchor="middle" font-family="monospace">s</text>
+
+      <rect x="530" y="290" width="35" height="40" fill="#C8E6C9" stroke="#388E3C" rx="3"/>
+      <text x="547" y="315" font-size="16" text-anchor="middle" font-family="monospace">h</text>
+    </g>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 450 355 L 450 385" stroke="#388E3C" stroke-width="3" fill="none" marker-end="url(#arrowgreen)"/>
+
+  <!-- Step 3: Learn Common Pairs (BPE Magic!) -->
+  <g id="step3">
+    <rect x="50" y="390" width="800" height="140" fill="#FFF3E0" stroke="#F57C00" stroke-width="2" rx="8"/>
+    <text x="80" y="415" font-size="16" font-weight="bold" fill="#E65100">
+      Step 3: Learn Common Pairs (BPE Training)
+    </text>
+    <text x="80" y="435" font-size="12" fill="#666">
+      Find frequently occurring character pairs and merge them
+    </text>
+
+    <!-- Merging examples -->
+    <g id="merge1">
+      <rect x="80" y="450" width="200" height="60" fill="#FFE0B2" stroke="#F57C00" rx="5"/>
+      <text x="180" y="472" font-size="13" text-anchor="middle" font-family="monospace" fill="#333">
+        "b" + "a" → "ba"
+      </text>
+      <text x="180" y="492" font-size="11" text-anchor="middle" fill="#666">
+        Frequent pair: merge!
+      </text>
+    </g>
+
+    <g id="merge2">
+      <rect x="300" y="450" width="200" height="60" fill="#FFE0B2" stroke="#F57C00" rx="5"/>
+      <text x="400" y="472" font-size="13" text-anchor="middle" font-family="monospace" fill="#333">
+        "ba" + "sh" → "bash"
+      </text>
+      <text x="400" y="492" font-size="11" text-anchor="middle" fill="#666">
+        Common word!
+      </text>
+    </g>
+
+    <g id="merge3">
+      <rect x="520" y="450" width="200" height="60" fill="#FFE0B2" stroke="#F57C00" rx="5"/>
+      <text x="620" y="472" font-size="13" text-anchor="middle" font-family="monospace" fill="#333">
+        "#!" → shebang token
+      </text>
+      <text x="620" y="492" font-size="11" text-anchor="middle" fill="#666">
+        Code-specific!
+      </text>
+    </g>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 450 535 L 450 565" stroke="#F57C00" stroke-width="3" fill="none" marker-end="url(#arroworange)"/>
+
+  <!-- Step 4: Final Tokens -->
+  <g id="step4">
+    <rect x="50" y="570" width="800" height="110" fill="#E3F2FD" stroke="#1976D2" stroke-width="2" rx="8"/>
+    <text x="80" y="595" font-size="16" font-weight="bold" fill="#0D47A1">
+      Step 4: Convert to Numbers (Token IDs)
+    </text>
+    <text x="80" y="615" font-size="12" fill="#666">
+      Each token gets a unique number that the model can process
+    </text>
+
+    <!-- Token boxes -->
+    <g id="tokens">
+      <rect x="80" y="630" width="140" height="35" fill="#BBDEFB" stroke="#1976D2" rx="3"/>
+      <text x="150" y="652" font-size="12" text-anchor="middle" font-family="monospace" fill="#333">
+        "#!/bin/" → 1234
+      </text>
+
+      <rect x="240" y="630" width="120" height="35" fill="#BBDEFB" stroke="#1976D2" rx="3"/>
+      <text x="300" y="652" font-size="12" text-anchor="middle" font-family="monospace" fill="#333">
+        "bash" → 5678
+      </text>
+
+      <rect x="380" y="630" width="90" height="35" fill="#90CAF9" stroke="#1976D2" rx="3"/>
+      <text x="425" y="652" font-size="11" text-anchor="middle" fill="#0D47A1">
+        Result: [1234, 5678]
+      </text>
+    </g>
+  </g>
+
+  <!-- Benefits box -->
+  <rect x="600" y="90" width="250" height="260" fill="#F1F8E9" stroke="#689F38" stroke-width="2" rx="8" stroke-dasharray="5,5"/>
+  <text x="725" y="115" font-size="14" font-weight="bold" text-anchor="middle" fill="#33691E">
+    ✨ Why BPE?
+  </text>
+
+  <text x="615" y="145" font-size="12" fill="#33691E" font-weight="bold">
+    ✅ Advantages:
+  </text>
+  <text x="625" y="165" font-size="11" fill="#666">
+    • Smaller vocab (~8K tokens)
+  </text>
+  <text x="625" y="183" font-size="11" fill="#666">
+    • Handles rare words
+  </text>
+  <text x="625" y="201" font-size="11" fill="#666">
+    • Learns code patterns
+  </text>
+  <text x="625" y="219" font-size="11" fill="#666">
+    • Efficient for bash
+  </text>
+
+  <text x="615" y="250" font-size="12" fill="#33691E" font-weight="bold">
+    📝 Example Tokens:
+  </text>
+  <text x="625" y="270" font-size="10" font-family="monospace" fill="#666">
+    "#!/bin/bash"
+  </text>
+  <text x="625" y="285" font-size="10" font-family="monospace" fill="#666">
+    "echo"
+  </text>
+  <text x="625" y="300" font-size="10" font-family="monospace" fill="#666">
+    "if [ -f"
+  </text>
+  <text x="625" y="315" font-size="10" font-family="monospace" fill="#666">
+    "tar -czf"
+  </text>
+  <text x="625" y="330" font-size="10" font-family="monospace" fill="#666">
+    "for i in"
+  </text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#7B1FA2" />
+    </marker>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#388E3C" />
+    </marker>
+    <marker id="arroworange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#F57C00" />
+    </marker>
+  </defs>
+</svg>

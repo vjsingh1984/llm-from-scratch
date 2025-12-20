@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 800">
+  <!-- Title -->
+  <text x="450" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">
+    Transformer Architecture (Simplified)
+  </text>
+  <text x="450" y="55" font-size="14" text-anchor="middle" fill="#666">
+    How the model processes and generates code
+  </text>
+
+  <!-- Input -->
+  <g id="input">
+    <rect x="325" y="80" width="250" height="50" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" rx="8"/>
+    <text x="450" y="110" font-size="16" font-weight="bold" text-anchor="middle" fill="#1B5E20">
+      📥 Input: "#!/bin/bash" [Tokens: 1234, 5678]
+    </text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 450 135 L 450 165" stroke="#4CAF50" stroke-width="3" fill="none" marker-end="url(#arrowgreen)"/>
+
+  <!-- Embedding Layer -->
+  <g id="embedding">
+    <rect x="250" y="170" width="400" height="70" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" rx="8"/>
+    <text x="450" y="195" font-size="15" font-weight="bold" text-anchor="middle" fill="#E65100">
+      1️⃣ Embedding Layer
+    </text>
+    <text x="450" y="215" font-size="12" text-anchor="middle" fill="#666">
+      Convert token numbers → vectors (384 dimensions)
+    </text>
+    <text x="450" y="232" font-size="11" text-anchor="middle" fill="#999" font-family="monospace">
+      [1234] → [0.23, -0.45, 0.67, ..., 0.12]
+    </text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 450 245 L 450 275" stroke="#FF9800" stroke-width="3" fill="none" marker-end="url(#arroworange)"/>
+
+  <!-- Transformer Blocks (x6) -->
+  <g id="transformer-blocks">
+    <rect x="200" y="280" width="500" height="350" fill="#E3F2FD" stroke="#1976D2" stroke-width="3" rx="10"/>
+
+    <!-- Label -->
+    <text x="450" y="310" font-size="16" font-weight="bold" text-anchor="middle" fill="#0D47A1">
+      2️⃣ Transformer Blocks (6 layers)
+    </text>
+    <text x="450" y="330" font-size="12" text-anchor="middle" fill="#666">
+      Each block processes and refines the information
+    </text>
+
+    <!-- Block 1 (detailed) -->
+    <g id="block1">
+      <rect x="230" y="350" width="440" height="250" fill="#BBDEFB" stroke="#1976D2" stroke-width="2" rx="8"/>
+
+      <!-- Attention -->
+      <rect x="250" y="370" width="400" height="70" fill="#90CAF9" stroke="#1565C0" stroke-width="2" rx="5"/>
+      <text x="450" y="392" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1">
+        🔍 Multi-Head Attention
+      </text>
+      <text x="450" y="410" font-size="11" text-anchor="middle" fill="#333">
+        "Look at previous words to understand context"
+      </text>
+      <text x="450" y="427" font-size="10" text-anchor="middle" fill="#666" font-style="italic">
+        Example: In "#!/bin/bash echo", attention links "echo" to "bash"
+      </text>
+
+      <!-- Arrow -->
+      <path d="M 450 445 L 450 465" stroke="#1565C0" stroke-width="2" fill="none" marker-end="url(#arrowblue)"/>
+
+      <!-- Feed Forward -->
+      <rect x="250" y="470" width="400" height="70" fill="#64B5F6" stroke="#1565C0" stroke-width="2" rx="5"/>
+      <text x="450" y="492" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1">
+        ⚡ Feed Forward Network
+      </text>
+      <text x="450" y="510" font-size="11" text-anchor="middle" fill="#333">
+        "Transform and enhance the understanding"
+      </text>
+      <text x="450" y="527" font-size="10" text-anchor="middle" fill="#666" font-style="italic">
+        Non-linear transformations: 384 → 1536 → 384 dimensions
+      </text>
+
+      <!-- Repeat indicator -->
+      <text x="450" y="565" font-size="12" text-anchor="middle" fill="#1976D2" font-style="italic">
+        ⟳ This pattern repeats 6 times (6 layers)
+      </text>
+      <text x="450" y="583" font-size="11" text-anchor="middle" fill="#666">
+        Each layer refines the understanding further
+      </text>
+    </g>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 450 635 L 450 665" stroke="#1976D2" stroke-width="3" fill="none" marker-end="url(#arrowblue)"/>
+
+  <!-- Output Layer -->
+  <g id="output">
+    <rect x="250" y="670" width="400" height="100" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="2" rx="8"/>
+    <text x="450" y="695" font-size="15" font-weight="bold" text-anchor="middle" fill="#4A148C">
+      3️⃣ Output Layer (Language Model Head)
+    </text>
+    <text x="450" y="715" font-size="12" text-anchor="middle" fill="#666">
+      Predict next token: Convert 384 dims → 8000 probabilities
+    </text>
+    <text x="450" y="735" font-size="11" text-anchor="middle" fill="#999" font-family="monospace">
+      [0.23, -0.45, ...] → [0.001, 0.002, ..., 0.35, ..., 0.001]
+    </text>
+    <text x="450" y="755" font-size="11" text-anchor="middle" fill="#7B1FA2" font-weight="bold">
+      Highest probability token = Next word!
+    </text>
+  </g>
+
+  <!-- Info boxes on the side -->
+  <g id="info-left">
+    <rect x="20" y="280" width="160" height="200" fill="#FFF9C4" stroke="#F9A825" stroke-width="2" rx="5"/>
+    <text x="100" y="305" font-size="13" font-weight="bold" text-anchor="middle" fill="#F57F17">
+      💡 Key Concepts
+    </text>
+
+    <text x="30" y="330" font-size="11" fill="#666" font-weight="bold">
+      Causal Masking:
+    </text>
+    <text x="35" y="347" font-size="9" fill="#666">
+      Only look at previous
+    </text>
+    <text x="35" y="360" font-size="9" fill="#666">
+      tokens, not future ones
+    </text>
+
+    <text x="30" y="385" font-size="11" fill="#666" font-weight="bold">
+      Residual Connections:
+    </text>
+    <text x="35" y="402" font-size="9" fill="#666">
+      Add input to output
+    </text>
+    <text x="35" y="415" font-size="9" fill="#666">
+      (helps training)
+    </text>
+
+    <text x="30" y="440" font-size="11" fill="#666" font-weight="bold">
+      Layer Normalization:
+    </text>
+    <text x="35" y="457" font-size="9" fill="#666">
+      Stabilize learning
+    </text>
+    <text x="35" y="470" font-size="9" fill="#666">
+      across layers
+    </text>
+  </g>
+
+  <g id="info-right">
+    <rect x="720" y="280" width="160" height="240" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" rx="5"/>
+    <text x="800" y="305" font-size="13" font-weight="bold" text-anchor="middle" fill="#1B5E20">
+      📊 Model Stats
+    </text>
+
+    <text x="730" y="330" font-size="10" fill="#666" font-weight="bold">
+      Small Model:
+    </text>
+    <text x="735" y="347" font-size="9" fill="#666">
+      • 6 layers
+    </text>
+    <text x="735" y="362" font-size="9" fill="#666">
+      • 384 hidden size
+    </text>
+    <text x="735" y="377" font-size="9" fill="#666">
+      • 6 attention heads
+    </text>
+    <text x="735" y="392" font-size="9" fill="#666">
+      • 48.7M parameters
+    </text>
+
+    <text x="730" y="417" font-size="10" fill="#666" font-weight="bold">
+      Performance:
+    </text>
+    <text x="735" y="434" font-size="9" fill="#666">
+      • 25K tokens/sec
+    </text>
+    <text x="735" y="449" font-size="9" fill="#666">
+      • ~500MB memory
+    </text>
+
+    <text x="730" y="474" font-size="10" fill="#666" font-weight="bold">
+      Context Window:
+    </text>
+    <text x="735" y="491" font-size="9" fill="#666">
+      • 512 tokens max
+    </text>
+    <text x="735" y="506" font-size="9" fill="#666">
+      • ~2KB of code
+    </text>
+  </g>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4CAF50" />
+    </marker>
+    <marker id="arroworange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#FF9800" />
+    </marker>
+    <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1976D2" />
+    </marker>
+  </defs>
+</svg>

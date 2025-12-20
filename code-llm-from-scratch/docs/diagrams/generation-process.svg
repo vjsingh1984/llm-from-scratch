@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 750">
+  <!-- Title -->
+  <text x="450" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">
+    Code Generation Process
+  </text>
+  <text x="450" y="55" font-size="14" text-anchor="middle" fill="#666">
+    How the model creates code one token at a time (autoregressive generation)
+  </text>
+
+  <!-- Initial prompt -->
+  <g id="prompt">
+    <rect x="50" y="90" width="800" height="70" fill="#E8F5E9" stroke="#4CAF50" stroke-width="3" rx="10"/>
+    <text x="450" y="115" font-size="16" font-weight="bold" text-anchor="middle" fill="#1B5E20">
+      Step 0: User Provides Prompt
+    </text>
+    <text x="450" y="140" font-size="14" text-anchor="middle" font-family="monospace" fill="#333">
+      "#!/bin/bash\n# Create a backup script"
+    </text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 450 165 L 450 195" stroke="#4CAF50" stroke-width="3" fill="none" marker-end="url(#arrowgreen)"/>
+
+  <!-- Generation loop box -->
+  <rect x="30" y="200" width="840" height="480" fill="#F5F5F5" stroke="#666" stroke-width="2" rx="10" stroke-dasharray="10,5"/>
+  <text x="450" y="230" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">
+    🔄 Generation Loop (Repeat until complete)
+  </text>
+
+  <!-- Step 1: Encode -->
+  <g id="step1">
+    <rect x="60" y="250" width="350" height="100" fill="#E3F2FD" stroke="#1976D2" stroke-width="2" rx="8"/>
+    <text x="235" y="275" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1">
+      Step 1: Tokenize Current Text
+    </text>
+    <text x="75" y="300" font-size="12" fill="#666">
+      Convert text → token IDs
+    </text>
+    <rect x="75" y="310" width="310" height="30" fill="#BBDEFB" stroke="#1976D2" rx="5"/>
+    <text x="230" y="330" font-size="11" text-anchor="middle" font-family="monospace" fill="#333">
+      "#!/bin/bash\n#" → [1234, 5678, 9012]
+    </text>
+  </g>
+
+  <!-- Step 2: Model forward pass -->
+  <g id="step2">
+    <rect x="450" y="250" width="390" height="100" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" rx="8"/>
+    <text x="645" y="275" font-size="14" font-weight="bold" text-anchor="middle" fill="#E65100">
+      Step 2: Model Prediction
+    </text>
+    <text x="465" y="300" font-size="12" fill="#666">
+      Run through transformer → Get probabilities
+    </text>
+    <rect x="465" y="310" width="360" height="30" fill="#FFE0B2" stroke="#FF9800" rx="5"/>
+    <text x="645" y="330" font-size="11" text-anchor="middle" font-family="monospace" fill="#333">
+      Probs: ["tar"=35%, "echo"=20%, "cd"=15%, ...]
+    </text>
+  </g>
+
+  <!-- Arrow down -->
+  <path d="M 235 355 L 235 375" stroke="#1976D2" stroke-width="2" fill="none" marker-end="url(#arrowblue)"/>
+  <path d="M 645 355 L 645 375" stroke="#FF9800" stroke-width="2" fill="none" marker-end="url(#arroworange)"/>
+
+  <!-- Step 3: Sample next token -->
+  <g id="step3">
+    <rect x="60" y="380" width="780" height="110" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="2" rx="8"/>
+    <text x="450" y="405" font-size="14" font-weight="bold" text-anchor="middle" fill="#4A148C">
+      Step 3: Sample Next Token
+    </text>
+    <text x="75" y="430" font-size="12" fill="#666">
+      Use temperature & top-k/top-p to choose next token
+    </text>
+
+    <!-- Sampling methods -->
+    <g id="sampling">
+      <rect x="75" y="440" width="240" height="40" fill="#E1BEE7" stroke="#7B1FA2" rx="5"/>
+      <text x="195" y="465" font-size="11" text-anchor="middle" fill="#333">
+        🎲 Temperature=0.8, Top-k=50
+      </text>
+
+      <text x="340" y="465" font-size="16" text-anchor="middle" fill="#4A148C" font-weight="bold">
+        →
+      </text>
+
+      <rect x="370" y="440" width="180" height="40" fill="#CE93D8" stroke="#7B1FA2" rx="5"/>
+      <text x="460" y="465" font-size="12" text-anchor="middle" fill="#fff" font-weight="bold">
+        Selected: "tar"
+      </text>
+
+      <text x="575" y="465" font-size="16" text-anchor="middle" fill="#4A148C" font-weight="bold">
+        →
+      </text>
+
+      <rect x="600" y="440" width="220" height="40" fill="#BA68C8" stroke="#7B1FA2" rx="5"/>
+      <text x="710" y="465" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">
+        Add to sequence
+      </text>
+    </g>
+  </g>
+
+  <!-- Arrow down -->
+  <path d="M 450 495 L 450 515" stroke="#7B1FA2" stroke-width="3" fill="none" marker-end="url(#arrowpurple)"/>
+
+  <!-- Step 4: Update and repeat -->
+  <g id="step4">
+    <rect x="60" y="520" width="780" height="90" fill="#C8E6C9" stroke="#4CAF50" stroke-width="2" rx="8"/>
+    <text x="450" y="545" font-size="14" font-weight="bold" text-anchor="middle" fill="#1B5E20">
+      Step 4: Update Text & Repeat
+    </text>
+    <rect x="75" y="555" width="750" height="45" fill="#A5D6A7" stroke="#4CAF50" rx="5"/>
+    <text x="450" y="573" font-size="12" text-anchor="middle" font-family="monospace" fill="#333">
+      Updated: "#!/bin/bash\n# Create a backup script\ntar"
+    </text>
+    <text x="450" y="593" font-size="11" text-anchor="middle" fill="#1B5E20" font-weight="bold">
+      ↻ Go back to Step 1 until max_length reached or stop token
+    </text>
+  </g>
+
+  <!-- End of loop -->
+  <text x="450" y="645" font-size="13" text-anchor="middle" fill="#666" font-style="italic">
+    Loop continues: tar → -czf → backup.tar.gz → ...</text>
+
+  <!-- Arrow down from loop -->
+  <path d="M 450 685 L 450 705" stroke="#333" stroke-width="3" fill="none" marker-end="url(#arrowblack)"/>
+
+  <!-- Final output -->
+  <g id="output">
+    <rect x="50" y="710" width="800" height="30" fill="#FFD54F" stroke="#F9A825" stroke-width="3" rx="8"/>
+    <text x="450" y="732" font-size="14" font-weight="bold" text-anchor="middle" fill="#F57F17">
+      ✨ Final Generated Code!
+    </text>
+  </g>
+
+  <!-- Side panel with generation parameters -->
+  <g id="params">
+    <rect x="620" y="90" width="220" height="140" fill="#FFF9C4" stroke="#F9A825" stroke-width="2" rx="5"/>
+    <text x="730" y="115" font-size="13" font-weight="bold" text-anchor="middle" fill="#F57F17">
+      ⚙️ Generation Settings
+    </text>
+
+    <text x="630" y="140" font-size="11" fill="#666">
+      <tspan font-weight="bold">Max Length:</tspan> 200 tokens
+    </text>
+    <text x="630" y="158" font-size="11" fill="#666">
+      <tspan font-weight="bold">Temperature:</tspan> 0.8
+    </text>
+    <text x="640" y="173" font-size="9" fill="#999">
+      Lower = more focused
+    </text>
+    <text x="640" y="184" font-size="9" fill="#999">
+      Higher = more creative
+    </text>
+
+    <text x="630" y="203" font-size="11" fill="#666">
+      <tspan font-weight="bold">Top-k:</tspan> 50 tokens
+    </text>
+    <text x="640" y="218" font-size="9" fill="#999">
+      Consider top 50 options
+    </text>
+  </g>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4CAF50" />
+    </marker>
+    <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1976D2" />
+    </marker>
+    <marker id="arroworange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#FF9800" />
+    </marker>
+    <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#7B1FA2" />
+    </marker>
+    <marker id="arrowblack" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,62 @@
+{
+  "backup": [
+    "#!/bin/bash\n# Create a backup of /data directory",
+    "#!/bin/bash\n# Incremental backup script with rotation",
+    "#!/bin/bash\n# Database backup with compression",
+    "#!/bin/bash\n# Automated daily backup to remote server"
+  ],
+  "monitoring": [
+    "#!/bin/bash\n# Monitor CPU and memory usage",
+    "#!/bin/bash\n# Check disk space and send alerts",
+    "#!/bin/bash\n# Log system metrics every hour",
+    "#!/bin/bash\n# Monitor service availability"
+  ],
+  "deployment": [
+    "#!/bin/bash\n# Deploy web application to production",
+    "#!/bin/bash\n# Rolling deployment with health checks",
+    "#!/bin/bash\n# Blue-green deployment script",
+    "#!/bin/bash\n# Deploy Docker containers"
+  ],
+  "maintenance": [
+    "#!/bin/bash\n# Rotate log files older than 7 days",
+    "#!/bin/bash\n# Clean up temporary files",
+    "#!/bin/bash\n# Update system packages safely",
+    "#!/bin/bash\n# Archive old files to storage"
+  ],
+  "security": [
+    "#!/bin/bash\n# Check for security updates",
+    "#!/bin/bash\n# Scan for suspicious files",
+    "#!/bin/bash\n# Renew SSL certificates automatically",
+    "#!/bin/bash\n# Firewall configuration script"
+  ],
+  "database": [
+    "#!/bin/bash\n# MySQL database backup",
+    "#!/bin/bash\n# PostgreSQL dump and restore",
+    "#!/bin/bash\n# Database integrity check",
+    "#!/bin/bash\n# Optimize database tables"
+  ],
+  "networking": [
+    "#!/bin/bash\n# Test network connectivity",
+    "#!/bin/bash\n# Check open ports",
+    "#!/bin/bash\n# Monitor bandwidth usage",
+    "#!/bin/bash\n# DNS configuration script"
+  ],
+  "user_management": [
+    "#!/bin/bash\n# Create user accounts from CSV file",
+    "#!/bin/bash\n# Remove inactive users",
+    "#!/bin/bash\n# Set up SSH keys for users",
+    "#!/bin/bash\n# Audit user permissions"
+  ],
+  "automation": [
+    "#!/bin/bash\n# Automated CI/CD pipeline",
+    "#!/bin/bash\n# Scheduled task runner",
+    "#!/bin/bash\n# Email notification script",
+    "#!/bin/bash\n# Generate daily reports"
+  ],
+  "docker": [
+    "#!/bin/bash\n# Start Docker containers",
+    "#!/bin/bash\n# Docker cleanup script",
+    "#!/bin/bash\n# Build and push Docker images",
+    "#!/bin/bash\n# Docker health check"
+  ]
+}

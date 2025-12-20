@@ -1,0 +1,295 @@
+#!/bin/bash
+echo "Hello, World!"
+
+
+============================================================
+
+#!/bin/bash
+name="User"
+echo "Hello, $name!"
+echo "Current directory: $PWD"
+
+
+============================================================
+
+#!/bin/bash
+greet() {
+    echo "Hello, $1!"
+}
+
+greet "Alice"
+greet "Bob"
+
+
+============================================================
+
+#!/bin/bash
+if [ -f "file.txt" ]; then
+    echo "File exists"
+else
+    echo "File not found"
+fi
+
+
+============================================================
+
+#!/bin/bash
+for i in 1 2 3 4 5; do
+    echo "Number: $i"
+done
+
+
+============================================================
+
+#!/bin/bash
+count=0
+while [ $count -lt 5 ]; do
+    echo "Count: $count"
+    count=$((count + 1))
+done
+
+
+============================================================
+
+#!/bin/bash
+fruits=("apple" "banana" "cherry")
+for fruit in "${fruits[@]}"; do
+    echo "Fruit: $fruit"
+done
+
+
+============================================================
+
+#!/bin/bash
+current_date=$(date)
+echo "Today is: $current_date"
+files=$(ls -1)
+echo "Files: $files"
+
+
+============================================================
+
+#!/bin/bash
+if [ ! -d "backup" ]; then
+    mkdir backup
+fi
+cp file.txt backup/
+echo "Backup created"
+
+
+============================================================
+
+#!/bin/bash
+text="Hello World"
+echo "${text,,}"  # lowercase
+echo "${text^^}"  # uppercase
+echo "${text:0:5}"  # substring
+
+
+============================================================
+
+#!/bin/bash
+find . -name "*.txt" -type f
+grep -r "pattern" .
+ls -la | grep ".log"
+
+
+============================================================
+
+#!/bin/bash
+set -e
+command_that_might_fail || {
+    echo "Command failed"
+    exit 1
+}
+echo "Success"
+
+
+============================================================
+
+#!/bin/bash
+read -p "Enter your name: " name
+echo "Hello, $name!"
+
+
+============================================================
+
+#!/bin/bash
+case $1 in
+    start)
+        echo "Starting..."
+        ;;
+    stop)
+        echo "Stopping..."
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        ;;
+esac
+
+
+============================================================
+
+#!/bin/bash
+echo "Script: $0"
+echo "First arg: $1"
+echo "All args: $@"
+echo "Num args: $#"
+
+
+============================================================
+
+#!/bin/bash
+cat file.txt | grep "error" | wc -l
+ps aux | grep python | awk '{print $2}'
+
+
+============================================================
+
+#!/bin/bash
+echo "Log message" >> log.txt
+command 2>&1 | tee output.log
+cat < input.txt > output.txt
+
+
+============================================================
+
+#!/bin/bash
+if [ -z "$VAR" ]; then
+    echo "VAR is empty"
+fi
+
+if [ $# -eq 0 ]; then
+    echo "No arguments"
+fi
+
+
+============================================================
+
+#!/bin/bash
+a=10
+b=5
+sum=$((a + b))
+diff=$((a - b))
+prod=$((a * b))
+echo "Sum: $sum"
+
+
+============================================================
+
+#!/bin/bash
+cat << EOF
+This is a
+multi-line
+text
+EOF
+
+
+============================================================
+
+#!/bin/bash
+long_command &
+echo "Running in background"
+wait
+echo "Done"
+
+
+============================================================
+
+#!/bin/bash
+command
+if [ $? -eq 0 ]; then
+    echo "Success"
+else
+    echo "Failed"
+fi
+
+
+============================================================
+
+#!/bin/bash
+add() {
+    result=$(($1 + $2))
+    echo $result
+}
+
+sum=$(add 5 3)
+echo "Sum: $sum"
+
+
+============================================================
+
+#!/bin/bash
+declare -A config
+config[host]="localhost"
+config[port]="8080"
+echo "${config[host]}:${config[port]}"
+
+
+============================================================
+
+#!/bin/bash
+if [ -r "file.txt" ]; then
+    echo "Readable"
+fi
+
+if [ -w "file.txt" ]; then
+    echo "Writable"
+fi
+
+if [ -x "script.sh" ]; then
+    echo "Executable"
+fi
+
+
+============================================================
+
+#!/bin/bash
+str1="hello"
+str2="world"
+
+if [ "$str1" = "$str2" ]; then
+    echo "Equal"
+else
+    echo "Not equal"
+fi
+
+
+============================================================
+
+#!/bin/bash
+a=10
+b=20
+
+if [ $a -lt $b ]; then
+    echo "$a is less than $b"
+fi
+
+
+============================================================
+
+#!/bin/bash
+export MY_VAR="value"
+echo $PATH
+echo $HOME
+echo $USER
+
+
+============================================================
+
+#!/bin/bash
+(cd /tmp && ls)
+echo "Still in: $PWD"
+
+
+============================================================
+
+#!/bin/bash
+trap "echo 'Interrupted'; exit" INT TERM
+while true; do
+    sleep 1
+done
+
+
+============================================================
+

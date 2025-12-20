@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650">
+  <!-- Title -->
+  <text x="450" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">
+    Self-Attention: How the Model "Pays Attention"
+  </text>
+  <text x="450" y="55" font-size="14" text-anchor="middle" fill="#666">
+    Understanding which words are related to each other
+  </text>
+
+  <!-- Example sentence -->
+  <rect x="150" y="80" width="600" height="60" fill="#E3F2FD" stroke="#1976D2" stroke-width="2" rx="8"/>
+  <text x="450" y="105" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1">
+    Example: "#!/bin/bash echo Hello World"
+  </text>
+  <text x="450" y="128" font-size="12" text-anchor="middle" fill="#666">
+    When processing "echo", which words should it pay attention to?
+  </text>
+
+  <!-- Word tokens -->
+  <g id="tokens">
+    <rect x="100" y="170" width="100" height="50" fill="#BBDEFB" stroke="#1976D2" stroke-width="2" rx="5"/>
+    <text x="150" y="200" font-size="14" text-anchor="middle" fill="#0D47A1" font-weight="bold">
+      #!/bin/bash
+    </text>
+
+    <rect x="230" y="170" width="80" height="50" fill="#90CAF9" stroke="#1976D2" stroke-width="2" rx="5"/>
+    <text x="270" y="200" font-size="14" text-anchor="middle" fill="#0D47A1" font-weight="bold">
+      echo
+    </text>
+
+    <rect x="340" y="170" width="80" height="50" fill="#BBDEFB" stroke="#1976D2" stroke-width="2" rx="5"/>
+    <text x="380" y="200" font-size="14" text-anchor="middle" fill="#0D47A1" font-weight="bold">
+      Hello
+    </text>
+
+    <rect x="450" y="170" width="80" height="50" fill="#BBDEFB" stroke="#1976D2" stroke-width="2" rx="5"/>
+    <text x="490" y="200" font-size="14" text-anchor="middle" fill="#0D47A1" font-weight="bold">
+      World
+    </text>
+  </g>
+
+  <!-- Current focus label -->
+  <text x="270" y="240" font-size="12" text-anchor="middle" fill="#E65100" font-weight="bold">
+    ← Currently processing this word
+  </text>
+
+  <!-- Attention arrows and scores -->
+  <g id="attention-arrows">
+    <!-- Arrow to #!/bin/bash (strong) -->
+    <defs>
+      <marker id="arrowstrong" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L9,3 z" fill="#4CAF50" />
+      </marker>
+      <marker id="arrowmedium" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L9,3 z" fill="#FF9800" />
+      </marker>
+      <marker id="arrowweak" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L9,3 z" fill="#9E9E9E" />
+      </marker>
+    </defs>
+
+    <path d="M 270 255 Q 150 280 150 300" stroke="#4CAF50" stroke-width="5" fill="none" marker-end="url(#arrowstrong)"/>
+    <text x="180" y="290" font-size="11" fill="#1B5E20" font-weight="bold">
+      0.7 (Strong!)
+    </text>
+
+    <!-- Curved line down showing attention scores -->
+    <path d="M 270 255 L 270 300" stroke="#FF9800" stroke-width="3" fill="none" marker-end="url(#arrowmedium)" stroke-dasharray="5,3"/>
+    <text x="280" y="280" font-size="11" fill="#E65100" font-weight="bold">
+      1.0 (Self!)
+    </text>
+  </g>
+
+  <!-- Explanation box -->
+  <rect x="50" y="320" width="800" height="280" fill="#F1F8E9" stroke="#689F38" stroke-width="2" rx="10"/>
+
+  <text x="450" y="350" font-size="16" font-weight="bold" text-anchor="middle" fill="#33691E">
+    🧠 How Attention Works (Step by Step)
+  </text>
+
+  <!-- Step 1 -->
+  <g id="step1-explain">
+    <rect x="70" y="370" width="760" height="60" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" rx="5"/>
+    <text x="85" y="392" font-size="13" font-weight="bold" fill="#1B5E20">
+      Step 1: Create Query, Key, Value vectors for each word
+    </text>
+    <text x="95" y="410" font-size="11" fill="#666">
+      • Query = "What am I looking for?" (from current word: "echo")
+    </text>
+    <text x="95" y="425" font-size="11" fill="#666">
+      • Key = "What do I contain?" (from all previous words)
+    </text>
+
+  </g>
+
+  <!-- Step 2 -->
+  <g id="step2-explain">
+    <rect x="70" y="440" width="760" height="70" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" rx="5"/>
+    <text x="85" y="462" font-size="13" font-weight="bold" fill="#E65100">
+      Step 2: Calculate attention scores (Query · Key)
+    </text>
+    <text x="95" y="480" font-size="11" fill="#666">
+      • Compare "echo" query with keys from all previous words
+    </text>
+    <text x="95" y="497" font-size="11" fill="#666">
+      • Result: "#!/bin/bash" scores 0.7 (high!), others score lower
+    </text>
+  </g>
+
+  <!-- Step 3 -->
+  <g id="step3-explain">
+    <rect x="70" y="520" width="760" height="70" fill="#E1BEE7" stroke="#7B1FA2" stroke-width="2" rx="5"/>
+    <text x="85" y="542" font-size="13" font-weight="bold" fill="#4A148C">
+      Step 3: Use scores to create weighted combination
+    </text>
+    <text x="95" y="560" font-size="11" fill="#666">
+      • Heavily weight "#!/bin/bash" (0.7), lightly weight others
+    </text>
+    <text x="95" y="577" font-size="11" fill="#666">
+      • Result: "echo" now knows it should follow bash conventions!
+    </text>
+  </g>
+
+  <!-- Visual representation of attention scores -->
+  <g id="score-bars">
+    <text x="580" y="180" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">
+      Attention Scores
+    </text>
+
+    <!-- Bar chart -->
+    <rect x="565" y="190" width="5" height="0" fill="#E0E0E0" stroke="#999" stroke-width="1"/>
+
+    <!-- #!/bin/bash bar -->
+    <rect x="595" y="195" width="180" height="25" fill="#4CAF50" stroke="#388E3C" stroke-width="1" rx="3"/>
+    <text x="620" y="212" font-size="11" fill="#fff" font-weight="bold">
+      #!/bin/bash: 70%
+    </text>
+
+    <!-- echo bar (self) -->
+    <rect x="595" y="228" width="250" height="25" fill="#FF9800" stroke="#F57C00" stroke-width="1" rx="3"/>
+    <text x="640" y="245" font-size="11" fill="#fff" font-weight="bold">
+      echo (self): 100%
+    </text>
+
+    <!-- Causal mask note -->
+    <text x="595" y="270" font-size="10" fill="#999" font-style="italic">
+      ⚠️ Future words masked (can't see them)
+    </text>
+  </g>
+
+  <!-- Multi-head attention note -->
+  <rect x="570" y="320" width="270" height="100" fill="#FFF9C4" stroke="#F9A825" stroke-width="2" rx="5"/>
+  <text x="705" y="345" font-size="13" font-weight="bold" text-anchor="middle" fill="#F57F17">
+    🔄 Multi-Head Attention
+  </text>
+  <text x="580" y="365" font-size="10" fill="#666">
+    We do this 6 times in parallel!
+  </text>
+  <text x="580" y="382" font-size="10" fill="#666">
+    • Head 1: Looks for syntax patterns
+  </text>
+  <text x="580" y="397" font-size="10" fill="#666">
+    • Head 2: Looks for semantic meaning
+  </text>
+  <text x="580" y="412" font-size="10" fill="#666">
+    • ... Each head learns different patterns
+  </text>
+</svg>

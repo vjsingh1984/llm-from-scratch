@@ -1,0 +1,70 @@
+
+============================================================
+STAGE 1: Language Pretraining
+============================================================
+
+Configuration:
+  Model: tiny
+  Device: mps
+  Steps: 2000
+  Batch size: 16
+  Learning rate: 0.0003
+
+============================================================
+Step 1: Loading Language Data
+============================================================
+Loaded 18,740 texts
+
+============================================================
+Step 2: Training Tokenizer
+============================================================
+============================================================
+Training BPE Tokenizer
+============================================================
+
+Training on 10000 samples...
+Target vocab size: 8000
+Training BPE tokenizer with vocab size 32000
+Found 7453 unique words/tokens
+Base vocabulary size: 102 (includes special tokens)
+Merge 500/31898: ('v', 'ent') -> vent (freq: 406)
+Merge 1000/31898: ('Ġhelp', 'ed') -> Ġhelped (freq: 150)
+Merge 1500/31898: ('Ġp', 'ra') -> Ġpra (freq: 74)
+Merge 2000/31898: ('anc', 'y') -> ancy (freq: 43)
+Merge 2500/31898: ('Ġcreat', 'ive') -> Ġcreative (freq: 29)
+Merge 3000/31898: ('Ġz', 'ip') -> Ġzip (freq: 21)
+Merge 3500/31898: ('Ġre', 'qu') -> Ġrequ (freq: 16)
+Merge 4000/31898: ('Ġdes', 'ign') -> Ġdesign (freq: 12)
+Merge 4500/31898: ('Ġfas', 'c') -> Ġfasc (freq: 9)
+Merge 5000/31898: ('Ġdown', 'stairs') -> Ġdownstairs (freq: 7)
+Merge 5500/31898: ('Ġflex', 'ible') -> Ġflexible (freq: 5)
+Merge 6000/31898: ('Ġsol', 'ving') -> Ġsolving (freq: 4)
+Merge 6500/31898: ('Ġj', 'unk') -> Ġjunk (freq: 3)
+Merge 7000/31898: ('Ġmin', 'i') -> Ġmini (freq: 2)
+Merge 7500/31898: ('Ġbracele', 'ts') -> Ġbracelets (freq: 2)
+Merge 8000/31898: ('amp', 's') -> amps (freq: 2)
+Merge 8500/31898: ('f', 'ar') -> far (freq: 1)
+Merge 9000/31898: ('Ġattack', 'ing') -> Ġattacking (freq: 1)
+Merge 9500/31898: ('Ġsw', 'ans') -> Ġswans (freq: 1)
+Merge 10000/31898: ('Åĵ', 'Stop') -> ÅĵStop (freq: 1)
+Merge 10500/31898: ('ĠPl', 'ay') -> ĠPlay (freq: 1)
+No more pairs to merge at iteration 10551
+
+Training complete! Final vocabulary size: 10653
+
+Tokenizer trained: 10653 tokens
+Tokenizer saved to /Users/vijaysingh/code/vijayllm/llm-from-scratch/pretrained-code-model/tokenizer_trained
+
+============================================================
+Step 3: Preparing Training Data
+============================================================
+Traceback (most recent call last):
+  File "/Users/vijaysingh/code/vijayllm/llm-from-scratch/pretrained-code-model/scripts/train_language.py", line 242, in <module>
+    main()
+  File "/Users/vijaysingh/code/vijayllm/llm-from-scratch/pretrained-code-model/scripts/train_language.py", line 161, in main
+    train_loader, val_loader = create_dataloaders(
+                               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/vijaysingh/code/vijayllm/llm-from-scratch/pretrained-code-model/training/data_loader.py", line 125, in create_dataloaders
+    with open(json_path, 'r') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/vijaysingh/code/vijayllm/llm-from-scratch/pretrained-code-model/data_language/processed/bash_scripts.json'
