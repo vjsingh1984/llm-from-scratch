@@ -283,6 +283,59 @@ IDs:    [320, 78, 240, 7502, 13, 5750, 12964]
 
 ---
 
+## Step 6: Dataset Preparation ✅
+
+### 6.1 Tokenize and Chunk Data
+
+Preparing datasets for training with 4096-token sequences...
+
+```bash
+python3 scripts/prepare_datasets.py
+```
+
+**Output:**
+```
+Preparing Language Dataset
+Loading 43 batch files...
+✓ Loaded 2,662,944 stories
+
+Concatenating texts...
+Tokenizing combined text...
+Total tokens: 105,653,947
+Chunking into sequences...
+✓ Created 25,795 sequences
+
+Train sequences: 24,505
+Val sequences: 1,290
+
+Preparing Code Dataset
+Loading 1779 bash scripts...
+✓ Loaded 1,779 scripts
+✓ Created 1,822 sequences
+
+Train sequences: 1,730
+Val sequences: 92
+
+Dataset Preparation Complete!
+
+Language Dataset:
+  Train: 24,505 sequences (100,372,480 tokens)
+  Val:   1,290 sequences (5,283,840 tokens)
+
+Code Dataset:
+  Train: 1,730 sequences (7,086,080 tokens)
+  Val:   92 sequences (376,832 tokens)
+```
+
+✅ **Status**: Datasets prepared and ready for training!
+- Language: 25K sequences from 106M tokens (concatenated stories)
+- Code: 1.8K sequences from 7.5M tokens (individual scripts)
+- All sequences padded/chunked to exactly 4096 tokens
+- 95/5 train/val split for both datasets
+- Saved as NumPy arrays for efficient loading
+
+---
+
 ## Next Steps
 
 1. ✅ Install MLX and dependencies
@@ -291,8 +344,8 @@ IDs:    [320, 78, 240, 7502, 13, 5750, 12964]
 4. ✅ Download language data (2.1M documents)
 5. ✅ Download bash scripts corpus (1,767 scripts)
 6. ✅ Train BPE tokenizer (32K vocab)
-7. **→ Prepare and tokenize datasets** (next)
-8. Train language model
-9. Fine-tune on code
+7. ✅ Prepare and tokenize datasets (106M tokens total)
+8. **→ Train language model (Stage 1)** (next)
+9. Fine-tune on code (Stage 2)
 10. Generate and evaluate
 

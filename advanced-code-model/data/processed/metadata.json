@@ -1,0 +1,16 @@
+{
+  "max_seq_len": 4096,
+  "vocab_size": 32000,
+  "language": {
+    "train_sequences": 24505,
+    "val_sequences": 1290,
+    "train_tokens": 100372480,
+    "val_tokens": 5283840
+  },
+  "code": {
+    "train_sequences": 1730,
+    "val_sequences": 92,
+    "train_tokens": 7086080,
+    "val_tokens": 376832
+  }
+}
