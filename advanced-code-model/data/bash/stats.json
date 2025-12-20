@@ -1,0 +1,22 @@
+{
+  "num_scripts": 12,
+  "total_characters": 8455,
+  "total_lines": 403,
+  "total_words": 1140,
+  "estimated_tokens": 1482,
+  "size_kb": 8.2568359375,
+  "categories": [
+    "ci",
+    "deploy.sh",
+    "check",
+    "monitor",
+    "mysql",
+    "security",
+    "db",
+    "sysadmin",
+    "log",
+    "network",
+    "user",
+    "docker"
+  ]
+}
