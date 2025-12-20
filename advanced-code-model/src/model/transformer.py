@@ -348,8 +348,37 @@ class MLXTransformer(nn.Module):
     def num_parameters(self) -> int:
         """Count total number of parameters."""
         total = 0
-        for name, param in self.named_parameters():
-            total += param.size
+
+        # Token and position embeddings
+        total += self.token_embedding.weight.size
+        total += self.position_embedding.weight.size
+
+        # Transformer blocks
+        for block in self.blocks:
+            # Attention
+            total += block.attention.qkv_proj.weight.size
+            total += block.attention.qkv_proj.bias.size
+            total += block.attention.out_proj.weight.size
+            total += block.attention.out_proj.bias.size
+
+            # FFN
+            total += block.ffn.fc1.weight.size
+            total += block.ffn.fc1.bias.size
+            total += block.ffn.fc2.weight.size
+            total += block.ffn.fc2.bias.size
+
+            # Layer norms
+            total += block.ln1.weight.size
+            total += block.ln1.bias.size
+            total += block.ln2.weight.size
+            total += block.ln2.bias.size
+
+        # Final layer norm
+        total += self.ln_f.weight.size
+        total += self.ln_f.bias.size
+
+        # LM head shares weights with token embedding, so don't double count
+
         return total
 
 
@@ -365,15 +394,8 @@ def create_model(config: ModelConfig) -> MLXTransformer:
     """
     model = MLXTransformer(config)
 
-    # Initialize weights (Xavier uniform for better convergence)
-    def init_weights(module):
-        if isinstance(module, (nn.Linear, nn.Embedding)):
-            std = 0.02
-            module.weight = mx.random.normal(module.weight.shape) * std
-            if hasattr(module, 'bias') and module.bias is not None:
-                module.bias = mx.zeros_like(module.bias)
-
-    model.apply(init_weights)
+    # MLX modules are automatically initialized with reasonable defaults
+    # No need for custom initialization in most cases
 
     return model
 
