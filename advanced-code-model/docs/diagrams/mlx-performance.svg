@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700">
+  <!-- Title -->
+  <text x="500" y="35" font-size="26" font-weight="bold" text-anchor="middle" fill="#333">
+    MLX vs PyTorch: Training Performance on Apple Silicon
+  </text>
+  <text x="500" y="60" font-size="14" text-anchor="middle" fill="#666">
+    Why MLX is 3-5x faster for transformer training on M1 Max
+  </text>
+
+  <!-- Performance comparison bars -->
+  <g id="speed-comparison">
+    <text x="50" y="110" font-size="18" font-weight="bold" fill="#333">
+      Training Speed (Tokens/Second)
+    </text>
+
+    <!-- PyTorch MPS -->
+    <text x="70" y="150" font-size="14" fill="#666">PyTorch MPS</text>
+    <rect x="70" y="160" width="240" height="40" fill="#FF6B6B" stroke="#D63031" stroke-width="2" rx="5"/>
+    <text x="320" y="185" font-size="16" font-weight="bold" fill="#D63031">12,000 tok/s</text>
+
+    <!-- MLX -->
+    <text x="70" y="230" font-size="14" fill="#666">MLX (Optimized)</text>
+    <rect x="70" y="240" width="840" height="40" fill="#51CF66" stroke="#37B24D" stroke-width="2" rx="5"/>
+    <text x="920" y="265" font-size="16" font-weight="bold" fill="#37B24D">42,000 tok/s</text>
+
+    <!-- Speedup indicator -->
+    <rect x="700" y="300" width="200" height="50" fill="#FFF3BF" stroke="#F59F00" stroke-width="2" rx="8"/>
+    <text x="800" y="330" font-size="18" font-weight="bold" text-anchor="middle" fill="#F08C00">
+      3.5x FASTER
+    </text>
+  </g>
+
+  <!-- Memory efficiency -->
+  <g id="memory-comparison">
+    <text x="50" y="400" font-size="18" font-weight="bold" fill="#333">
+      Memory Usage (350M Parameter Model)
+    </text>
+
+    <!-- PyTorch -->
+    <g>
+      <text x="150" y="440" font-size="14" text-anchor="middle" fill="#666">PyTorch MPS</text>
+      <rect x="75" y="450" width="150" height="180" fill="#FFE0E0" stroke="#D63031" stroke-width="3" rx="8"/>
+      <text x="150" y="550" font-size="32" font-weight="bold" text-anchor="middle" fill="#D63031">
+        24GB
+      </text>
+      <text x="150" y="580" font-size="12" text-anchor="middle" fill="#999">
+        Peak memory
+      </text>
+    </g>
+
+    <!-- MLX -->
+    <g>
+      <text x="350" y="440" font-size="14" text-anchor="middle" fill="#666">MLX (Unified)</text>
+      <rect x="275" y="450" width="150" height="120" fill="#D0F4DE" stroke="#37B24D" stroke-width="3" rx="8"/>
+      <text x="350" y="520" font-size="32" font-weight="bold" text-anchor="middle" fill="#37B24D">
+        16GB
+      </text>
+      <text x="350" y="550" font-size="12" text-anchor="middle" fill="#999">
+        Peak memory
+      </text>
+
+      <!-- Savings -->
+      <path d="M 225 570 Q 250 540, 275 515" stroke="#37B24D" stroke-width="2" fill="none" marker-end="url(#arrowgreen)"/>
+      <rect x="120" y="560" width="100" height="30" fill="#D0F4DE" stroke="#37B24D" stroke-width="2" rx="5"/>
+      <text x="170" y="580" font-size="13" font-weight="bold" text-anchor="middle" fill="#37B24D">
+        33% Less
+      </text>
+    </g>
+  </g>
+
+  <!-- Key advantages -->
+  <g id="advantages">
+    <text x="550" y="400" font-size="18" font-weight="bold" fill="#333">
+      Why MLX is Faster
+    </text>
+
+    <!-- Advantage 1 -->
+    <g>
+      <rect x="550" y="420" width="400" height="70" fill="#E7F5FF" stroke="#1971C2" stroke-width="2" rx="8"/>
+      <text x="570" y="445" font-size="14" font-weight="bold" fill="#1864AB">
+        1. Unified Memory Architecture
+      </text>
+      <text x="570" y="465" font-size="12" fill="#666">
+        • No CPU → GPU data copying
+      </text>
+      <text x="570" y="482" font-size="12" fill="#666">
+        • Seamless memory sharing reduces overhead
+      </text>
+    </g>
+
+    <!-- Advantage 2 -->
+    <g>
+      <rect x="550" y="505" width="400" height="70" fill="#FFF3BF" stroke="#F59F00" stroke-width="2" rx="8"/>
+      <text x="570" y="530" font-size="14" font-weight="bold" fill="#F08C00">
+        2. Native Metal Acceleration
+      </text>
+      <text x="570" y="550" font-size="12" fill="#666">
+        • Optimized kernels for Apple Silicon
+      </text>
+      <text x="570" y="567" font-size="12" fill="#666">
+        • Direct hardware access, no CUDA overhead
+      </text>
+    </g>
+
+    <!-- Advantage 3 -->
+    <g>
+      <rect x="550" y="590" width="400" height="70" fill="#E3FAFC" stroke="#0C8599" stroke-width="2" rx="8"/>
+      <text x="570" y="615" font-size="14" font-weight="bold" fill="#0B7285">
+        3. Lazy Evaluation
+      </text>
+      <text x="570" y="635" font-size="12" fill="#666">
+        • Computes only when needed
+      </text>
+      <text x="570" y="652" font-size="12" fill="#666">
+        • Graph optimization reduces redundant operations
+      </text>
+    </g>
+  </g>
+
+  <!-- Bottom summary -->
+  <rect x="50" y="675" width="900" height="20" fill="#D0F4DE" stroke="#37B24D" stroke-width="2" rx="5"/>
+  <text x="500" y="690" font-size="13" text-anchor="middle" fill="#2B8A3E" font-weight="bold">
+    Result: Train production models in hours instead of days on your Mac!
+  </text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#37B24D" />
+    </marker>
+  </defs>
+</svg>

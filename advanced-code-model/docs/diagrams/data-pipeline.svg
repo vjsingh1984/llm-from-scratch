@@ -1,0 +1,322 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 850">
+  <!-- Title -->
+  <text x="500" y="35" font-size="26" font-weight="bold" text-anchor="middle" fill="#333">
+    Production-Scale Data Pipeline
+  </text>
+  <text x="500" y="60" font-size="14" text-anchor="middle" fill="#666">
+    From 5GB BookCorpus to production code model - with 4096 token context
+  </text>
+
+  <!-- Stage 1: Language Pretraining Data -->
+  <g id="stage1-data">
+    <rect x="50" y="100" width="430" height="320" fill="#E7F5FF" stroke="#1971C2" stroke-width="3" rx="10"/>
+
+    <!-- Header -->
+    <text x="265" y="130" font-size="18" font-weight="bold" text-anchor="middle" fill="#1864AB">
+      Stage 1: Language Pretraining
+    </text>
+
+    <!-- Input data -->
+    <g>
+      <rect x="70" y="150" width="180" height="100" fill="#FFF" stroke="#1971C2" stroke-width="2" rx="8"/>
+      <text x="160" y="175" font-size="14" font-weight="bold" text-anchor="middle" fill="#1864AB">
+        BookCorpus
+      </text>
+      <text x="160" y="195" font-size="12" text-anchor="middle" fill="#666">
+        Raw Data
+      </text>
+      <text x="160" y="220" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">
+        5.2 GB
+      </text>
+      <text x="160" y="238" font-size="11" text-anchor="middle" fill="#999">
+        11,000 books
+      </text>
+    </g>
+
+    <!-- Processing arrow -->
+    <path d="M 260 200 L 290 200" stroke="#1971C2" stroke-width="3" fill="none" marker-end="url(#arrowblue)"/>
+    <text x="275" y="195" font-size="11" font-weight="bold" text-anchor="middle" fill="#1864AB">
+      Process
+    </text>
+
+    <!-- Processing steps -->
+    <g>
+      <rect x="300" y="150" width="160" height="100" fill="#D0EBFF" stroke="#1971C2" stroke-width="2" rx="8"/>
+      <text x="380" y="170" font-size="12" font-weight="bold" text-anchor="middle" fill="#1864AB">
+        Tokenization
+      </text>
+      <text x="310" y="190" font-size="10" text-anchor="start" fill="#666">
+        • Clean text
+      </text>
+      <text x="310" y="205" font-size="10" text-anchor="start" fill="#666">
+        • Train BPE (32K vocab)
+      </text>
+      <text x="310" y="220" font-size="10" text-anchor="start" fill="#666">
+        • Chunk to 4096 tokens
+      </text>
+      <text x="310" y="235" font-size="10" text-anchor="start" fill="#666">
+        • Create train/val split
+      </text>
+    </g>
+
+    <!-- Output -->
+    <g>
+      <rect x="70" y="275" width="390" height="130" fill="#FFF" stroke="#1971C2" stroke-width="2" rx="8"/>
+      <text x="265" y="300" font-size="14" font-weight="bold" text-anchor="middle" fill="#1864AB">
+        Processed Dataset
+      </text>
+
+      <!-- Train split -->
+      <rect x="90" y="315" width="170" height="75" fill="#E7F5FF" stroke="#1971C2" stroke-width="1" rx="5"/>
+      <text x="175" y="335" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">
+        Train Set (95%)
+      </text>
+      <text x="175" y="353" font-size="11" text-anchor="middle" fill="#666">
+        70M tokens
+      </text>
+      <text x="175" y="370" font-size="11" text-anchor="middle" fill="#666">
+        17,089 sequences
+      </text>
+      <text x="175" y="385" font-size="10" text-anchor="middle" fill="#999">
+        (4096 tok/seq)
+      </text>
+
+      <!-- Val split -->
+      <rect x="280" y="315" width="170" height="75" fill="#E7F5FF" stroke="#1971C2" stroke-width="1" rx="5"/>
+      <text x="365" y="335" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">
+        Val Set (5%)
+      </text>
+      <text x="365" y="353" font-size="11" text-anchor="middle" fill="#666">
+        4M tokens
+      </text>
+      <text x="365" y="370" font-size="11" text-anchor="middle" fill="#666">
+        976 sequences
+      </text>
+      <text x="365" y="385" font-size="10" text-anchor="middle" fill="#999">
+        (4096 tok/seq)
+      </text>
+    </g>
+  </g>
+
+  <!-- Stage 2: Code Fine-tuning Data -->
+  <g id="stage2-data">
+    <rect x="520" y="100" width="430" height="320" fill="#FFF3BF" stroke="#F59F00" stroke-width="3" rx="10"/>
+
+    <!-- Header -->
+    <text x="735" y="130" font-size="18" font-weight="bold" text-anchor="middle" fill="#F08C00">
+      Stage 2: Code Fine-Tuning
+    </text>
+
+    <!-- Input data -->
+    <g>
+      <rect x="540" y="150" width="180" height="100" fill="#FFF" stroke="#F59F00" stroke-width="2" rx="8"/>
+      <text x="630" y="175" font-size="14" font-weight="bold" text-anchor="middle" fill="#F08C00">
+        Bash Corpus
+      </text>
+      <text x="630" y="195" font-size="12" text-anchor="middle" fill="#666">
+        Curated Scripts
+      </text>
+      <text x="630" y="220" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">
+        523 MB
+      </text>
+      <text x="630" y="238" font-size="11" text-anchor="middle" fill="#999">
+        10,000+ scripts
+      </text>
+    </g>
+
+    <!-- Processing arrow -->
+    <path d="M 730 200 L 760 200" stroke="#F59F00" stroke-width="3" fill="none" marker-end="url(#arroworange)"/>
+    <text x="745" y="195" font-size="11" font-weight="bold" text-anchor="middle" fill="#F08C00">
+      Process
+    </text>
+
+    <!-- Processing steps -->
+    <g>
+      <rect x="770" y="150" width="160" height="100" fill="#FFE8CC" stroke="#F59F00" stroke-width="2" rx="8"/>
+      <text x="850" y="170" font-size="12" font-weight="bold" text-anchor="middle" fill="#F08C00">
+        Code Processing
+      </text>
+      <text x="780" y="190" font-size="10" text-anchor="start" fill="#666">
+        • Validate syntax
+      </text>
+      <text x="780" y="205" font-size="10" text-anchor="start" fill="#666">
+        • Reuse BPE tokenizer
+      </text>
+      <text x="780" y="220" font-size="10" text-anchor="start" fill="#666">
+        • Chunk to 4096 tokens
+      </text>
+      <text x="780" y="235" font-size="10" text-anchor="start" fill="#666">
+        • 90/10 train/val split
+      </text>
+    </g>
+
+    <!-- Output -->
+    <g>
+      <rect x="540" y="275" width="390" height="130" fill="#FFF" stroke="#F59F00" stroke-width="2" rx="8"/>
+      <text x="735" y="300" font-size="14" font-weight="bold" text-anchor="middle" fill="#F08C00">
+        Processed Dataset
+      </text>
+
+      <!-- Train split -->
+      <rect x="560" y="315" width="170" height="75" fill="#FFF3BF" stroke="#F59F00" stroke-width="1" rx="5"/>
+      <text x="645" y="335" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">
+        Train Set (90%)
+      </text>
+      <text x="645" y="353" font-size="11" text-anchor="middle" fill="#666">
+        11M tokens
+      </text>
+      <text x="645" y="370" font-size="11" text-anchor="middle" fill="#666">
+        2,686 sequences
+      </text>
+      <text x="645" y="385" font-size="10" text-anchor="middle" fill="#999">
+        (4096 tok/seq)
+      </text>
+
+      <!-- Val split -->
+      <rect x="750" y="315" width="170" height="75" fill="#FFF3BF" stroke="#F59F00" stroke-width="1" rx="5"/>
+      <text x="835" y="335" font-size="12" font-weight="bold" text-anchor="middle" fill="#333">
+        Val Set (10%)
+      </text>
+      <text x="835" y="353" font-size="11" text-anchor="middle" fill="#666">
+        1.2M tokens
+      </text>
+      <text x="835" y="370" font-size="11" text-anchor="middle" fill="#666">
+        293 sequences
+      </text>
+      <text x="835" y="385" font-size="10" text-anchor="middle" fill="#999">
+        (4096 tok/seq)
+      </text>
+    </g>
+  </g>
+
+  <!-- Key advantages -->
+  <g id="advantages">
+    <text x="500" y="465" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">
+      Why 4096 Token Context?
+    </text>
+
+    <!-- Advantage 1 -->
+    <rect x="80" y="490" width="280" height="90" fill="#E7F5FF" stroke="#1971C2" stroke-width="2" rx="8"/>
+    <text x="220" y="515" font-size="14" font-weight="bold" text-anchor="middle" fill="#1864AB">
+      1. Complete Scripts
+    </text>
+    <text x="100" y="540" font-size="11" text-anchor="start" fill="#666">
+      • Average bash script: 200-300 lines
+    </text>
+    <text x="100" y="557" font-size="11" text-anchor="start" fill="#666">
+      • 4096 tokens ≈ full script context
+    </text>
+    <text x="100" y="574" font-size="11" text-anchor="start" fill="#666">
+      • Model sees entire logic flow
+    </text>
+
+    <!-- Advantage 2 -->
+    <rect x="380" y="490" width="280" height="90" fill="#FFF3BF" stroke="#F59F00" stroke-width="2" rx="8"/>
+    <text x="520" y="515" font-size="14" font-weight="bold" text-anchor="middle" fill="#F08C00">
+      2. Better Code Quality
+    </text>
+    <text x="400" y="540" font-size="11" text-anchor="start" fill="#666">
+      • Long-range dependencies captured
+    </text>
+    <text x="400" y="557" font-size="11" text-anchor="start" fill="#666">
+      • Function references understood
+    </text>
+    <text x="400" y="574" font-size="11" text-anchor="start" fill="#666">
+      • Variable scoping learned
+    </text>
+
+    <!-- Advantage 3 -->
+    <rect x="680" y="490" width="280" height="90" fill="#E3FAFC" stroke="#0C8599" stroke-width="2" rx="8"/>
+    <text x="820" y="515" font-size="14" font-weight="bold" text-anchor="middle" fill="#0B7285">
+      3. Complex Patterns
+    </text>
+    <text x="700" y="540" font-size="11" text-anchor="start" fill="#666">
+      • Multi-function scripts handled
+    </text>
+    <text x="700" y="557" font-size="11" text-anchor="start" fill="#666">
+      • Error handling patterns learned
+    </text>
+    <text x="700" y="574" font-size="11" text-anchor="start" fill="#666">
+      • Best practices captured
+    </text>
+  </g>
+
+  <!-- Training pipeline visualization -->
+  <g id="pipeline">
+    <text x="500" y="630" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">
+      Complete Training Pipeline
+    </text>
+
+    <!-- Step 1 -->
+    <rect x="80" y="660" width="200" height="60" fill="#E7F5FF" stroke="#1971C2" stroke-width="2" rx="8"/>
+    <text x="180" y="682" font-size="13" font-weight="bold" text-anchor="middle" fill="#1864AB">
+      Download Data
+    </text>
+    <text x="180" y="700" font-size="11" text-anchor="middle" fill="#666">
+      5.7GB total
+    </text>
+
+    <text x="290" y="692" font-size="20" fill="#495057">→</text>
+
+    <!-- Step 2 -->
+    <rect x="305" y="660" width="200" height="60" fill="#FFF3BF" stroke="#F59F00" stroke-width="2" rx="8"/>
+    <text x="405" y="682" font-size="13" font-weight="bold" text-anchor="middle" fill="#F08C00">
+      Tokenize (BPE)
+    </text>
+    <text x="405" y="700" font-size="11" text-anchor="middle" fill="#666">
+      32K vocabulary
+    </text>
+
+    <text x="515" y="692" font-size="20" fill="#495057">→</text>
+
+    <!-- Step 3 -->
+    <rect x="530" y="660" width="200" height="60" fill="#D0F4DE" stroke="#37B24D" stroke-width="2" rx="8"/>
+    <text x="630" y="682" font-size="13" font-weight="bold" text-anchor="middle" fill="#2B8A3E">
+      Train Model
+    </text>
+    <text x="630" y="700" font-size="11" text-anchor="middle" fill="#666">
+      Stage 1 + Stage 2
+    </text>
+
+    <text x="740" y="692" font-size="20" fill="#495057">→</text>
+
+    <!-- Step 4 -->
+    <rect x="755" y="660" width="180" height="60" fill="#FFD8A8" stroke="#FD7E14" stroke-width="2" rx="8"/>
+    <text x="845" y="682" font-size="13" font-weight="bold" text-anchor="middle" fill="#D9480F">
+      Generate Code
+    </text>
+    <text x="845" y="700" font-size="11" text-anchor="middle" fill="#666">
+      Production ready!
+    </text>
+  </g>
+
+  <!-- Performance metrics -->
+  <rect x="50" y="750" width="900" height="80" fill="#F8F9FA" stroke="#495057" stroke-width="2" rx="10"/>
+  <text x="500" y="775" font-size="16" font-weight="bold" text-anchor="middle" fill="#333">
+    Training Time Estimates (M1 Max, 350M model)
+  </text>
+  <g transform="translate(100, 790)">
+    <text x="0" y="0" font-size="12" fill="#666">
+      <tspan font-weight="bold" fill="#1971C2">Data Processing:</tspan> 2-3 hours
+    </text>
+    <text x="0" y="20" font-size="12" fill="#666">
+      <tspan font-weight="bold" fill="#F59F00">Stage 1 Training:</tspan> 48 hours (100K steps)
+    </text>
+    <text x="450" y="0" font-size="12" fill="#666">
+      <tspan font-weight="bold" fill="#37B24D">Stage 2 Training:</tspan> 18 hours (20K steps)
+    </text>
+    <text x="450" y="20" font-size="12" fill="#666">
+      <tspan font-weight="bold" fill="#FD7E14">Total:</tspan> ~70 hours = 3 days
+    </text>
+  </g>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1971C2" />
+    </marker>
+    <marker id="arroworange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#F59F00" />
+    </marker>
+  </defs>
+</svg>

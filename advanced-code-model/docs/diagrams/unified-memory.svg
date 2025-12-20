@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 750">
+  <!-- Title -->
+  <text x="500" y="35" font-size="26" font-weight="bold" text-anchor="middle" fill="#333">
+    Unified Memory: MLX's Key Advantage
+  </text>
+  <text x="500" y="60" font-size="14" text-anchor="middle" fill="#666">
+    How Apple Silicon's unified memory revolutionizes ML training
+  </text>
+
+  <!-- Traditional Architecture (PyTorch) -->
+  <g id="traditional">
+    <text x="250" y="110" font-size="18" font-weight="bold" text-anchor="middle" fill="#D63031">
+      Traditional: PyTorch on GPU
+    </text>
+
+    <!-- CPU Memory -->
+    <rect x="50" y="140" width="180" height="120" fill="#FFE0E0" stroke="#D63031" stroke-width="3" rx="8"/>
+    <text x="140" y="170" font-size="16" font-weight="bold" text-anchor="middle" fill="#D63031">
+      CPU Memory
+    </text>
+    <text x="140" y="195" font-size="12" text-anchor="middle" fill="#666">
+      System RAM
+    </text>
+    <text x="140" y="215" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">
+      8-16 GB
+    </text>
+    <text x="140" y="235" font-size="11" text-anchor="middle" fill="#999">
+      • Data loading
+    </text>
+    <text x="140" y="250" font-size="11" text-anchor="middle" fill="#999">
+      • Preprocessing
+    </text>
+
+    <!-- GPU Memory -->
+    <rect x="270" y="140" width="180" height="120" fill="#FFE0E0" stroke="#D63031" stroke-width="3" rx="8"/>
+    <text x="360" y="170" font-size="16" font-weight="bold" text-anchor="middle" fill="#D63031">
+      GPU Memory
+    </text>
+    <text x="360" y="195" font-size="12" text-anchor="middle" fill="#666">
+      Dedicated VRAM
+    </text>
+    <text x="360" y="215" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">
+      8-16 GB
+    </text>
+    <text x="360" y="235" font-size="11" text-anchor="middle" fill="#999">
+      • Model weights
+    </text>
+    <text x="360" y="250" font-size="11" text-anchor="middle" fill="#999">
+      • Training compute
+    </text>
+
+    <!-- Data transfer arrows -->
+    <g>
+      <path d="M 235 180 L 265 180" stroke="#D63031" stroke-width="3" fill="none" marker-end="url(#arrowred)"/>
+      <text x="250" y="175" font-size="10" text-anchor="middle" fill="#D63031" font-weight="bold">
+        COPY
+      </text>
+
+      <path d="M 265 220 L 235 220" stroke="#D63031" stroke-width="3" fill="none" marker-end="url(#arrowred)"/>
+      <text x="250" y="240" font-size="10" text-anchor="middle" fill="#D63031" font-weight="bold">
+        COPY
+      </text>
+    </g>
+
+    <!-- Bottleneck warning -->
+    <rect x="90" y="280" width="320" height="60" fill="#FFF5F5" stroke="#FF6B6B" stroke-width="2" rx="8" stroke-dasharray="5,3"/>
+    <text x="250" y="302" font-size="13" font-weight="bold" text-anchor="middle" fill="#C92A2A">
+      ⚠️ Performance Bottleneck
+    </text>
+    <text x="250" y="320" font-size="11" text-anchor="middle" fill="#666">
+      • Constant CPU ↔ GPU copying
+    </text>
+    <text x="250" y="335" font-size="11" text-anchor="middle" fill="#666">
+      • Limited by PCIe bandwidth (~32 GB/s)
+    </text>
+  </g>
+
+  <!-- MLX Unified Architecture -->
+  <g id="unified">
+    <text x="680" y="110" font-size="18" font-weight="bold" text-anchor="middle" fill="#37B24D">
+      MLX: Unified Memory (Apple Silicon)
+    </text>
+
+    <!-- Single unified memory pool -->
+    <rect x="520" y="140" width="320" height="200" fill="#D0F4DE" stroke="#37B24D" stroke-width="3" rx="8"/>
+
+    <!-- Header -->
+    <text x="680" y="170" font-size="16" font-weight="bold" text-anchor="middle" fill="#37B24D">
+      Unified Memory Pool
+    </text>
+    <text x="680" y="190" font-size="12" text-anchor="middle" fill="#666">
+      Shared CPU/GPU Access
+    </text>
+
+    <!-- Memory size -->
+    <text x="680" y="215" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">
+      32-64 GB
+    </text>
+    <text x="680" y="235" font-size="11" text-anchor="middle" fill="#999">
+      (M1 Max / M1 Ultra)
+    </text>
+
+    <!-- CPU access -->
+    <g>
+      <rect x="540" y="250" width="120" height="70" fill="#E7F5FF" stroke="#1971C2" stroke-width="2" rx="5"/>
+      <text x="600" y="270" font-size="12" font-weight="bold" text-anchor="middle" fill="#1864AB">
+        CPU Access
+      </text>
+      <text x="600" y="288" font-size="10" text-anchor="middle" fill="#666">
+        • Data loading
+      </text>
+      <text x="600" y="302" font-size="10" text-anchor="middle" fill="#666">
+        • Preprocessing
+      </text>
+    </g>
+
+    <!-- GPU access -->
+    <g>
+      <rect x="680" y="250" width="140" height="70" fill="#FFF3BF" stroke="#F59F00" stroke-width="2" rx="5"/>
+      <text x="750" y="270" font-size="12" font-weight="bold" text-anchor="middle" fill="#F08C00">
+        GPU Access
+      </text>
+      <text x="750" y="288" font-size="10" text-anchor="middle" fill="#666">
+        • Model compute
+      </text>
+      <text x="750" y="302" font-size="10" text-anchor="middle" fill="#666">
+        • Training ops
+      </text>
+    </g>
+
+    <!-- No copying indicator -->
+    <path d="M 660 285 L 680 285" stroke="#37B24D" stroke-width="2" fill="none"/>
+    <text x="670" y="282" font-size="11" text-anchor="middle" fill="#37B24D" font-weight="bold">
+      ✓
+    </text>
+
+    <!-- Advantage box -->
+    <rect x="530" y="355" width="300" height="70" fill="#E9F7EF" stroke="#51CF66" stroke-width="2" rx="8"/>
+    <text x="680" y="378" font-size="13" font-weight="bold" text-anchor="middle" fill="#2F9E44">
+      ✓ Zero-Copy Data Sharing
+    </text>
+    <text x="680" y="396" font-size="11" text-anchor="middle" fill="#666">
+      • No CPU ↔ GPU transfers needed
+    </text>
+    <text x="680" y="411" font-size="11" text-anchor="middle" fill="#666">
+      • Direct memory access from both processors
+    </text>
+    <text x="680" y="426" font-size="11" text-anchor="middle" fill="#666">
+      • 3-5x faster, 33% less memory usage
+    </text>
+  </g>
+
+  <!-- Comparison diagram -->
+  <g id="workflow-comparison">
+    <text x="500" y="480" font-size="18" font-weight="bold" text-anchor="middle" fill="#333">
+      Training Workflow Comparison
+    </text>
+
+    <!-- PyTorch workflow -->
+    <g>
+      <text x="250" y="515" font-size="14" font-weight="bold" text-anchor="middle" fill="#D63031">
+        PyTorch MPS
+      </text>
+
+      <!-- Steps -->
+      <rect x="70" y="530" width="100" height="35" fill="#FFE8E8" stroke="#D63031" stroke-width="2" rx="5"/>
+      <text x="120" y="552" font-size="11" text-anchor="middle" fill="#333">Load to CPU</text>
+
+      <text x="175" y="552" font-size="16" fill="#D63031">→</text>
+
+      <rect x="185" y="530" width="100" height="35" fill="#FFD4D4" stroke="#D63031" stroke-width="2" rx="5"/>
+      <text x="235" y="552" font-size="11" text-anchor="middle" fill="#333">Copy to GPU</text>
+
+      <text x="290" y="552" font-size="16" fill="#D63031">→</text>
+
+      <rect x="300" y="530" width="100" height="35" fill="#FFBFBF" stroke="#D63031" stroke-width="2" rx="5"/>
+      <text x="350" y="552" font-size="11" text-anchor="middle" fill="#333">Train</text>
+
+      <text x="405" y="552" font-size="16" fill="#D63031">→</text>
+
+      <rect x="415" y="530" width="100" height="35" fill="#FFD4D4" stroke="#D63031" stroke-width="2" rx="5"/>
+      <text x="465" y="552" font-size="11" text-anchor="middle" fill="#333">Copy to CPU</text>
+
+      <!-- Time -->
+      <rect x="150" y="575" width="250" height="25" fill="#FFF5F5" stroke="#FF6B6B" stroke-width="2" rx="5"/>
+      <text x="275" y="592" font-size="12" text-anchor="middle" fill="#C92A2A" font-weight="bold">
+        ⏱️ 100ms + 30ms copying overhead
+      </text>
+    </g>
+
+    <!-- MLX workflow -->
+    <g>
+      <text x="680" y="515" font-size="14" font-weight="bold" text-anchor="middle" fill="#37B24D">
+        MLX (Unified)
+      </text>
+
+      <!-- Steps -->
+      <rect x="550" y="530" width="100" height="35" fill="#D0F4DE" stroke="#37B24D" stroke-width="2" rx="5"/>
+      <text x="600" y="552" font-size="11" text-anchor="middle" fill="#333">Load Data</text>
+
+      <text x="655" y="552" font-size="16" fill="#37B24D">→</text>
+
+      <rect x="665" y="530" width="100" height="35" fill="#A8E6CF" stroke="#37B24D" stroke-width="2" rx="5"/>
+      <text x="715" y="552" font-size="11" text-anchor="middle" fill="#333">Train</text>
+
+      <text x="770" y="552" font-size="16" fill="#37B24D">→</text>
+
+      <rect x="780" y="530" width="100" height="35" fill="#87D4AB" stroke="#37B24D" stroke-width="2" rx="5"/>
+      <text x="830" y="552" font-size="11" text-anchor="middle" fill="#333">Done</text>
+
+      <!-- Time -->
+      <rect x="605" y="575" width="180" height="25" fill="#E9F7EF" stroke="#51CF66" stroke-width="2" rx="5"/>
+      <text x="695" y="592" font-size="12" text-anchor="middle" fill="#2F9E44" font-weight="bold">
+        ⏱️ 100ms (no overhead!)
+      </text>
+    </g>
+
+    <!-- Performance gain -->
+    <rect x="350" y="620" width="300" height="50" fill="#FFF9DB" stroke="#FFB700" stroke-width="3" rx="8"/>
+    <text x="500" y="650" font-size="16" font-weight="bold" text-anchor="middle" fill="#996600">
+      🚀 30% Faster Overall Training
+    </text>
+  </g>
+
+  <!-- Real-world example -->
+  <rect x="50" y="690" width="900" height="50" fill="#E3F2FD" stroke="#1976D2" stroke-width="2" rx="8"/>
+  <text x="500" y="712" font-size="13" font-weight="bold" text-anchor="middle" fill="#1565C0">
+    Real-world impact: Training 350M model on 5GB data
+  </text>
+  <text x="500" y="730" font-size="12" text-anchor="middle" fill="#666">
+    PyTorch MPS: 72 hours | MLX: 48 hours (saves 24 hours!)
+  </text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowred" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#D63031" />
+    </marker>
+  </defs>
+</svg>
