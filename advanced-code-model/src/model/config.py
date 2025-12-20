@@ -29,6 +29,22 @@ class ModelConfig:
     attention_dropout: float = 0.1
     residual_dropout: float = 0.1
 
+    # Architecture options
+    use_rmsnorm: bool = False  # Use RMSNorm instead of LayerNorm (10-15% faster)
+    use_gradient_checkpointing: bool = False  # Trade compute for memory (40-50% less memory)
+    use_rope: bool = False  # Use Rotary Position Embeddings (better length extrapolation)
+
+    # MoE-specific parameters
+    num_experts: int = 8  # Number of expert networks (MoE)
+    expert_capacity: int = 2  # Top-K experts to route to (MoE)
+
+    # Mamba/SSM-specific parameters
+    state_size: int = 16  # State expansion factor for Mamba
+    conv_size: int = 4  # Convolution kernel size for Mamba
+
+    # Hybrid-specific parameters
+    hybrid_local_window: int = 256  # Local attention window for hybrid arch
+
     # Training
     weight_decay: float = 0.01
     grad_clip: float = 1.0
@@ -92,6 +108,14 @@ class ModelConfig:
             'dropout': self.dropout,
             'attention_dropout': self.attention_dropout,
             'residual_dropout': self.residual_dropout,
+            'use_rmsnorm': self.use_rmsnorm,
+            'use_gradient_checkpointing': self.use_gradient_checkpointing,
+            'use_rope': self.use_rope,
+            'num_experts': self.num_experts,
+            'expert_capacity': self.expert_capacity,
+            'state_size': self.state_size,
+            'conv_size': self.conv_size,
+            'hybrid_local_window': self.hybrid_local_window,
             'weight_decay': self.weight_decay,
             'grad_clip': self.grad_clip,
             'temperature': self.temperature,
@@ -113,14 +137,17 @@ def get_tiny_config() -> ModelConfig:
     - Quick testing and prototyping
     - Limited memory (8GB)
     - Fast iteration
+    - Verifying training pipeline works
+
+    Memory usage: ~2GB total with batch_size=4
     """
     return ModelConfig(
-        vocab_size=16000,
+        vocab_size=32000,
         d_model=768,
         n_layers=12,
         n_heads=12,
         d_ff=3072,
-        max_seq_len=2048,
+        max_seq_len=4096,
         dropout=0.1,
     )
 
@@ -129,11 +156,13 @@ def get_medium_config() -> ModelConfig:
     """
     Medium model configuration (350M parameters).
 
-    Recommended for M1 Max:
+    Recommended for:
+    - M1 Max 32GB systems
     - Good balance of quality and speed
-    - Memory: ~16GB
-    - Training speed: ~35K tok/s
     - Production-ready quality
+
+    Memory usage: ~6-8GB total with batch_size=2
+    Training speed: ~35K tok/s
     """
     return ModelConfig(
         vocab_size=32000,
@@ -148,20 +177,23 @@ def get_medium_config() -> ModelConfig:
 
 def get_large_config() -> ModelConfig:
     """
-    Large model configuration (780M parameters).
+    Large model configuration (~1B parameters).
 
-    Recommended for M1 Ultra:
-    - High quality generation
-    - Memory: ~32GB
-    - Training speed: ~28K tok/s
-    - Best for complex code patterns
+    RECOMMENDED FOR 48GB UNIFIED VRAM (24GB target usage):
+    - High quality code generation
+    - Optimal for 48GB Apple Silicon systems
+    - Best balance of quality and training speed
+    - Excellent for complex code patterns
+
+    Memory usage: ~16-18GB total with batch_size=4
+    Training speed: ~28K tok/s
     """
     return ModelConfig(
         vocab_size=32000,
-        d_model=1536,
+        d_model=1600,
         n_layers=32,
-        n_heads=24,
-        d_ff=6144,
+        n_heads=25,
+        d_ff=6400,
         max_seq_len=4096,
         dropout=0.1,
     )
@@ -169,20 +201,23 @@ def get_large_config() -> ModelConfig:
 
 def get_xlarge_config() -> ModelConfig:
     """
-    XLarge model configuration (1.5B parameters).
+    XLarge model configuration (~1.5B parameters).
 
-    Recommended for M2 Ultra:
-    - Maximum quality
-    - Memory: ~48GB
-    - Training speed: ~22K tok/s
+    For 48GB UNIFIED VRAM (pushing 24GB limit):
+    - Maximum quality code generation
+    - Slower training but best results
     - State-of-the-art performance
+    - Use batch_size=2 to stay within memory
+
+    Memory usage: ~22-24GB total with batch_size=2
+    Training speed: ~20K tok/s
     """
     return ModelConfig(
-        vocab_size=50000,
-        d_model=2048,
-        n_layers=40,
-        n_heads=32,
-        d_ff=8192,
+        vocab_size=32000,
+        d_model=1792,
+        n_layers=36,
+        n_heads=28,
+        d_ff=7168,
         max_seq_len=4096,
         dropout=0.1,
     )

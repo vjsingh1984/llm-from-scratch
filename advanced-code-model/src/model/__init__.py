@@ -1,5 +1,5 @@
 """
-MLX-optimized model components for code generation.
+PyTorch model components for code generation with MPS backend.
 """
 
 from .config import (
@@ -12,10 +12,11 @@ from .config import (
 )
 
 from .transformer import (
-    MLXTransformer,
-    MLXMultiHeadAttention,
-    MLXFeedForward,
-    MLXTransformerBlock,
+    Transformer,
+    MultiHeadAttention,
+    FeedForward,
+    TransformerBlock,
+    RMSNorm,
     create_model,
 )
 
@@ -28,9 +29,10 @@ __all__ = [
     'get_xlarge_config',
     'get_config',
     # Model
-    'MLXTransformer',
-    'MLXMultiHeadAttention',
-    'MLXFeedForward',
-    'MLXTransformerBlock',
+    'Transformer',
+    'MultiHeadAttention',
+    'FeedForward',
+    'TransformerBlock',
+    'RMSNorm',
     'create_model',
 ]

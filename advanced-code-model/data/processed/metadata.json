@@ -2,15 +2,15 @@
   "max_seq_len": 4096,
   "vocab_size": 32000,
   "language": {
-    "train_sequences": 24505,
-    "val_sequences": 1290,
-    "train_tokens": 100372480,
-    "val_tokens": 5283840
+    "train_sequences": 98019,
+    "val_sequences": 5159,
+    "train_tokens": 401485824,
+    "val_tokens": 21131264
   },
   "code": {
-    "train_sequences": 1730,
-    "val_sequences": 92,
-    "train_tokens": 7086080,
-    "val_tokens": 376832
+    "train_sequences": 2235,
+    "val_sequences": 118,
+    "train_tokens": 9154560,
+    "val_tokens": 483328
   }
 }

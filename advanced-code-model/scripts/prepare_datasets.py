@@ -240,7 +240,7 @@ def main():
     lang_train, lang_val = prepare_language_dataset(
         language_dir,
         tokenizer,
-        max_seq_len=4096
+        max_seq_len=1024
     )
 
     # Save language data
@@ -258,7 +258,7 @@ def main():
     code_train, code_val = prepare_code_dataset(
         code_dir,
         tokenizer,
-        max_seq_len=4096
+        max_seq_len=1024
     )
 
     # Save code data
