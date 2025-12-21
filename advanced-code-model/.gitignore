@@ -1,2 +1,174 @@
+# LLM Training Project .gitignore
+
+# ============================================================
+# MODEL CHECKPOINTS (LARGE FILES - DO NOT COMMIT!)
+# ============================================================
+# These files are 500MB - 2GB each!
+models/*.pth
+models/*.pt
+models/*.bin
+models/*.safetensors
+
+# Exception: Keep training history (small JSON files)
+!models/*_training_history.json
+
+# ============================================================
+# TRAINING DATA (LARGE FILES - DO NOT COMMIT!)
+# ============================================================
+# Preprocessed data (numpy arrays)
+data/processed/*.npy
+
+# Raw data
+data/raw/
+data/downloads/
 data/bash/raw/repos/
 advanced-code-model/data/bash/raw/repos/
+
+# Generated images (multimodal stage)
+data/processed/images/
+
+# RAG vector store
+data/rag/
+
+# ============================================================
+# PYTHON
+# ============================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# pyenv
+.python-version
+
+# ============================================================
+# IDEs and Editors
+# ============================================================
+# VSCode
+.vscode/
+.vscode-test/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ============================================================
+# Operating System Files
+# ============================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+.Trash-*
+
+# ============================================================
+# Logs and Temporary Files
+# ============================================================
+*.log
+logs/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Tensorboard logs
+runs/
+tensorboard/
+
+# WandB (if using Weights & Biases)
+wandb/
+
+# ============================================================
+# Compressed Files
+# ============================================================
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# ============================================================
+# What SHOULD be committed (for reference):
+# ============================================================
+# ✅ Source code (src/)
+# ✅ Scripts (scripts/)
+# ✅ Documentation (docs/)
+# ✅ README.md
+# ✅ Requirements/setup files
+# ✅ Small config files
+# ✅ Training history JSON files (small)
+# ✅ Tokenizer configs (if <10MB)
+# ✅ This .gitignore file!
+# ============================================================

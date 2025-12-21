@@ -51,21 +51,64 @@ def load_datasets(stage: str, data_dir: Path, device: torch.device) -> Tuple[tor
     Load training and validation datasets.
 
     Args:
-        stage: 'language' or 'code'
+        stage: 'language', 'code', 'tool_calling', 'multimodal', or 'domain'
         data_dir: Path to processed data directory
         device: Device (kept on CPU to save memory)
 
     Returns:
         Train and validation tensors (on CPU)
     """
-    if stage == "language":
-        train_path = data_dir / "language_train.npy"
-        val_path = data_dir / "language_val.npy"
-    else:
-        train_path = data_dir / "code_train.npy"
-        val_path = data_dir / "code_val.npy"
+    # Map stage to data files
+    stage_data_map = {
+        "language": ("language_train.npy", "language_val.npy"),
+        "code": ("code_train.npy", "code_val.npy"),
+        "tool_calling": ("tool_calling_train.npy", "tool_calling_val.npy"),
+        "multimodal": ("multimodal_train_tokens.npy", "multimodal_val_tokens.npy"),
+        "domain": ("domain_train.npy", "domain_val.npy"),
+    }
+
+    if stage not in stage_data_map:
+        raise ValueError(f"Unknown stage: {stage}. Valid: {list(stage_data_map.keys())}")
+
+    train_file, val_file = stage_data_map[stage]
+    train_path = data_dir / train_file
+    val_path = data_dir / val_file
+
+    # Check if data exists with helpful error messages
+    if not train_path.exists() or not val_path.exists():
+        print("\n" + "="*60)
+        print(f"❌ ERROR: {stage.upper()} DATA NOT FOUND!")
+        print("="*60)
+
+        if stage == "tool_calling":
+            print(f"\n📝 Stage 3 (Tool Calling) requires data preparation first.\n")
+            print("STEP 1: Generate the data")
+            print("  python3 scripts/prepare_tool_calling_data.py\n")
+            print("STEP 2: Then train")
+            print("  python3 scripts/train.py --stage tool_calling \\")
+            print("    --checkpoint models/code_model_best.pth \\")
+            print("    --use-rmsnorm --use-rope --batch-size 2\n")
+
+        elif stage == "multimodal":
+            print(f"\n📝 Stage 5 (Multi-Modal) requires data preparation first.\n")
+            print("STEP 1: Generate the data")
+            print("  python3 scripts/prepare_multimodal_data.py\n")
+
+        elif stage == "domain":
+            print(f"\n📝 Stage 8 (Domain) requires data preparation first.\n")
+            print("STEP 1: Generate the data")
+            print("  python3 scripts/prepare_domain_data.py\n")
+
+        print(f"Missing files:")
+        print(f"  ❌ {train_path}")
+        print(f"  ❌ {val_path}")
+        print("="*60 + "\n")
+        sys.exit(1)
 
     print(f"Loading {stage} datasets...")
+    print(f"  📂 Train: {train_path.name}")
+    print(f"  📂 Val: {val_path.name}")
+
     train_data = np.load(train_path)
     val_data = np.load(val_path)
 
@@ -300,7 +343,17 @@ def save_checkpoint(model: nn.Module, optimizer: torch.optim.Optimizer, path: Pa
 def load_checkpoint(model: nn.Module, optimizer: torch.optim.Optimizer, path: Path, device: torch.device):
     """Load model checkpoint."""
     checkpoint = torch.load(path, map_location=device)
-    model.load_state_dict(checkpoint['model_state_dict'])
+
+    # Handle torch.compile wrapped models (remove _orig_mod. prefix)
+    state_dict = checkpoint['model_state_dict']
+    if any(key.startswith('_orig_mod.') for key in state_dict.keys()):
+        print("  Detected compiled model, stripping _orig_mod. prefix...")
+        state_dict = {
+            key.replace('_orig_mod.', ''): value
+            for key, value in state_dict.items()
+        }
+
+    model.load_state_dict(state_dict)
     if 'optimizer_state_dict' in checkpoint and optimizer is not None:
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
     print(f"✓ Loaded checkpoint: {path}")
@@ -309,8 +362,8 @@ def load_checkpoint(model: nn.Module, optimizer: torch.optim.Optimizer, path: Pa
 
 def main():
     parser = argparse.ArgumentParser(description="Train language model with PyTorch+MPS")
-    parser.add_argument("--stage", type=str, required=True, choices=["language", "code"],
-                        help="Training stage")
+    parser.add_argument("--stage", type=str, required=True, choices=["language", "code", "tool_calling"],
+                        help="Training stage: language (Stage 1), code (Stage 2), tool_calling (Stage 3)")
     parser.add_argument("--model-size", type=str, default="tiny",
                         choices=["tiny", "medium", "large", "xlarge"],
                         help="Model size")

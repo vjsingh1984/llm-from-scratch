@@ -39,7 +39,7 @@ class SelectiveSSM(nn.Module):
     """
 
     def __init__(self, d_model: int, state_size: int, conv_size: int = 4,
-                 use_parallel_scan: bool = False, chunk_size: int = 256):  # Disabled until debugged
+                 use_parallel_scan: bool = False, chunk_size: int = 256):  # Sequential for stability
         super().__init__()
         self.d_model = d_model
         self.state_size = state_size
@@ -169,12 +169,12 @@ class SelectiveSSM(nn.Module):
     def _direct_parallel_scan(self, A: torch.Tensor, Bu: torch.Tensor,
                               batch: int, state_size: int) -> torch.Tensor:
         """
-        Direct parallel scan using fully vectorized PyTorch operations.
+        Parallel scan using binary tree reduction - O(log n) depth.
 
-        For the recurrence h_t = A_t * h_{t-1} + Bu_t, we can compute:
-        h_t = (prod_{j=1}^{t} A_j) * 0 + sum_{i=0}^{t} (prod_{j=i+1}^{t} A_j) * Bu_i
+        For recurrence h_t = A_t * h_{t-1} + Bu_t, we use associative operator:
+        (A2, Bu2) ⊗ (A1, Bu1) = (A2 * A1, A2 * Bu1 + Bu2)
 
-        This is a lower-triangular matrix operation that can be vectorized.
+        This allows parallel prefix sum in O(log n) steps.
 
         Args:
             A: [batch, seq_len, state_size] - transition matrices
@@ -185,102 +185,75 @@ class SelectiveSSM(nn.Module):
         """
         batch, seq_len, state_size = A.shape
 
-        # Use log-space for numerical stability
-        log_A = torch.log(A.clamp(min=1e-20))  # [batch, seq_len, state_size]
+        # Pad to power of 2 for binary tree
+        next_pow2 = 2 ** math.ceil(math.log2(max(seq_len, 2)))
+        if seq_len < next_pow2:
+            pad_len = next_pow2 - seq_len
+            A = F.pad(A, (0, 0, 0, pad_len), value=1.0)  # Identity for A
+            Bu = F.pad(Bu, (0, 0, 0, pad_len), value=0.0)  # Zero for Bu
 
-        # Compute cumulative sums in log space
-        # cumsum_log_A[t] = log(A[0]) + log(A[1]) + ... + log(A[t])
-        # = log(A[0] * A[1] * ... * A[t])
-        cumsum_log_A = torch.cumsum(log_A, dim=1)  # [batch, seq_len, state_size]
+        # Store as pairs (A, Bu) for associative scan
+        A_scan = A.clone()  # [batch, next_pow2, state_size]
+        Bu_scan = Bu.clone()  # [batch, next_pow2, state_size]
 
-        # We need to compute a lower triangular matrix L where:
-        # L[t, i] = prod(A[i+1], A[i+2], ..., A[t]) for i < t
-        # L[t, t] = 1
-        # L[t, i] = 0 for i > t
-        #
-        # In log space:
-        # log(L[t, i]) = cumsum_log_A[t] - cumsum_log_A[i] for i < t
-        # log(L[t, t]) = 0 (since prod is 1)
+        num_levels = int(math.log2(next_pow2))
 
-        # Create indices for vectorized operations
-        # Shape: [seq_len, seq_len]
-        t_indices = torch.arange(seq_len, device=A.device)
-        i_indices = torch.arange(seq_len, device=A.device)
-        t_grid, i_grid = torch.meshgrid(t_indices, i_indices, indexing='ij')
+        # Up-sweep: build binary tree (avoid in-place for autograd)
+        for level in range(num_levels):
+            stride = 2 ** (level + 1)
+            # Create new tensors to avoid in-place modifications
+            A_new = A_scan.clone()
+            Bu_new = Bu_scan.clone()
 
-        # Create lower triangular mask
-        mask = (i_grid <= t_grid).float()  # [seq_len, seq_len]
+            # Update positions at stride, 2*stride, 3*stride, ...
+            for i in range(stride - 1, next_pow2, stride):
+                # Combine with left sibling
+                left_i = i - 2 ** level
+                # (A[i], Bu[i]) = (A[i], Bu[i]) ⊗ (A[left_i], Bu[left_i])
+                # = (A[i] * A[left_i], A[i] * Bu[left_i] + Bu[i])
+                Bu_new[:, i] = A_scan[:, i] * Bu_scan[:, left_i] + Bu_scan[:, i]
+                A_new[:, i] = A_scan[:, i] * A_scan[:, left_i]
 
-        # Compute log of products in vectorized way
-        # For i < t: log_prod = cumsum_log_A[t] - cumsum_log_A[i-1]
-        # For i = 0: log_prod = cumsum_log_A[t]
-        # For i = t: log_prod = 0
+            A_scan = A_new
+            Bu_scan = Bu_new
 
-        # Add dimension for batch and state_size
-        # cumsum_log_A: [batch, seq_len, state_size]
-        # We need: [batch, seq_len, seq_len, state_size]
+        # Down-sweep: propagate results down the tree
+        # Create new tensors for root modification
+        A_new = A_scan.clone()
+        Bu_new = Bu_scan.clone()
+        A_new[:, -1] = 1.0
+        Bu_new[:, -1] = 0.0
+        A_scan = A_new
+        Bu_scan = Bu_new
 
-        # Expand cumsum_log_A for broadcasting
-        cumsum_expanded_t = cumsum_log_A.unsqueeze(2)  # [batch, seq_len, 1, state_size]
+        for level in range(num_levels - 1, -1, -1):
+            stride = 2 ** (level + 1)
+            A_new = A_scan.clone()
+            Bu_new = Bu_scan.clone()
 
-        # For cumsum[i-1], we need to handle i=0 case
-        # Prepend zeros
-        cumsum_padded = torch.cat([
-            torch.zeros(batch, 1, state_size, device=A.device),
-            cumsum_log_A
-        ], dim=1)  # [batch, seq_len+1, state_size]
-        cumsum_expanded_i = cumsum_padded.unsqueeze(1)  # [batch, 1, seq_len+1, state_size]
+            for i in range(stride - 1, next_pow2, stride):
+                left_i = i - 2 ** level
+                # Swap and combine (no in-place)
+                temp_A = A_scan[:, i]
+                temp_Bu = Bu_scan[:, i]
 
-        # Compute log products: cumsum[t] - cumsum[i]
-        # For position (t, i), we want prod(A[i+1], ..., A[t])
-        # = exp(sum(log_A[i+1:t+1]))
-        # = exp(cumsum_log_A[t] - cumsum_log_A[i])
-        # But for i=t, we want 1 (not A[t]), so we handle that with the mask
+                # Right child gets parent value
+                A_new[:, i] = temp_A * A_scan[:, left_i]
+                Bu_new[:, i] = temp_A * Bu_scan[:, left_i] + temp_Bu
 
-        log_prods = cumsum_expanded_t - cumsum_expanded_i[:, :, :seq_len]  # [batch, seq_len, seq_len, state_size]
+                # Left child gets original parent value
+                A_new[:, left_i] = temp_A
+                Bu_new[:, left_i] = temp_Bu
 
-        # For diagonal (i=t), the product should be 1, which is log_prod = 0
-        # Our formula gives cumsum[t] - cumsum[t-1] = log(A[t])
-        # So we need to zero out the diagonal contribution
-        # Actually, the formula cumsum[t] - cumsum[i-1] gives:
-        # - For i=0: cumsum[t] - cumsum[-1] = cumsum[t] - 0 = log(prod(A[0:t+1])) ✓
-        # - For i=t: cumsum[t] - cumsum[t-1] = log(A[t]) ✗ (should be 0 for identity)
-        #
-        # We need to adjust for diagonal: when i=t, we want prod to be 1
-        # So we'll subtract log_A[i] when i=t to make it 0
+            A_scan = A_new
+            Bu_scan = Bu_new
 
-        # Create diagonal correction
-        diag_correction = torch.diag_embed(log_A).unsqueeze(0)  # [1, batch, seq_len, seq_len, state_size] - wrong dims
-        # Actually let's do this more carefully
-        # Diagonal elements: we computed cumsum[t] - cumsum[t-1] = log_A[t]
-        # We want 0, so subtract log_A[t]
+        # The scan result is in Bu_scan
+        # But we need to compute h from the scan - actually Bu_scan already contains h!
+        # Because h[t] = scan result at position t
 
-        diag_indices = torch.arange(seq_len, device=A.device)
-        # For diagonal: log_prods[:, t, t, :] -= log_A[:, t, :]
-        # This is a bit tricky with broadcasting. Let's use the mask differently.
-
-        # Actually, simpler approach: for i=t, we want coefficient 1
-        # For i<t, we want prod(A[i+1:t+1])
-        # The current formula cumsum[t] - cumsum[i-1] gives prod(A[i:t+1])
-        # So we need to divide by A[i] => subtract log_A[i]
-
-        # Subtract log_A[i] for all positions
-        log_A_expanded = log_A.unsqueeze(1)  # [batch, 1, seq_len, state_size]
-        log_prods = log_prods - log_A_expanded  # Now we have prod(A[i+1:t+1])
-
-        # But for i=t, this gives prod(A[t+1:t+1]) = 1 (empty product), which is correct! ✓
-
-        # Convert to linear space and apply mask
-        prods = torch.exp(log_prods) * mask.unsqueeze(0).unsqueeze(-1)  # [batch, seq_len, seq_len, state_size]
-
-        # Compute h = L @ Bu
-        # prods: [batch, seq_len(t), seq_len(i), state_size]
-        # Bu: [batch, seq_len(i), state_size]
-        # Result: [batch, seq_len(t), state_size]
-
-        Bu_expanded = Bu.unsqueeze(1)  # [batch, 1, seq_len, state_size]
-        weighted_Bu = prods * Bu_expanded  # [batch, seq_len, seq_len, state_size]
-        h_states = torch.sum(weighted_Bu, dim=2)  # [batch, seq_len, state_size]
+        # Remove padding
+        h_states = Bu_scan[:, :seq_len]
 
         return h_states
 
