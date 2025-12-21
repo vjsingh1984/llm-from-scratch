@@ -20,6 +20,7 @@ data/processed/*.npy
 
 # Raw data
 data/raw/
+data/language/raw/
 data/downloads/
 data/bash/raw/repos/
 advanced-code-model/data/bash/raw/repos/
