@@ -1,9 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Arrow markers - must be defined first -->
+  <defs>
+    <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1976D2" />
+    </marker>
+    <marker id="arroworange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#F57C00" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#FAFAFA"/>
+
   <!-- Title -->
-  <text x="400" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">
+  <text x="400" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
     Two-Stage Training Pipeline
   </text>
-  <text x="400" y="55" font-size="14" text-anchor="middle" fill="#666">
+  <text x="400" y="55" font-size="14" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
     Modern approach used by CodeLlama, GitHub Copilot, StarCoder
   </text>
 
@@ -13,25 +26,25 @@
     <rect x="50" y="100" width="700" height="180" fill="#E3F2FD" stroke="#1976D2" stroke-width="3" rx="10"/>
 
     <!-- Stage Label -->
-    <text x="400" y="130" font-size="20" font-weight="bold" text-anchor="middle" fill="#1565C0">
+    <text x="400" y="130" font-size="20" font-weight="bold" text-anchor="middle" fill="#1565C0" font-family="Arial, sans-serif">
       Stage 1: Language Pretraining
     </text>
-    <text x="400" y="155" font-size="14" text-anchor="middle" fill="#666">
+    <text x="400" y="155" font-size="14" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
       Duration: 2-4 hours on M1 Max
     </text>
 
     <!-- Input -->
     <rect x="80" y="175" width="150" height="80" fill="#BBDEFB" stroke="#1976D2" stroke-width="2" rx="5"/>
-    <text x="155" y="200" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1">
-      📚 Input Data
+    <text x="155" y="200" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1" font-family="Arial, sans-serif">
+      Input Data
     </text>
-    <text x="155" y="220" font-size="12" text-anchor="middle" fill="#333">
+    <text x="155" y="220" font-size="12" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
       TinyStories
     </text>
-    <text x="155" y="238" font-size="11" text-anchor="middle" fill="#666">
+    <text x="155" y="238" font-size="11" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
       18,740 texts
     </text>
-    <text x="155" y="252" font-size="11" text-anchor="middle" fill="#666">
+    <text x="155" y="252" font-size="11" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
       796K words
     </text>
 
@@ -40,17 +53,17 @@
 
     <!-- Process -->
     <rect x="320" y="175" width="160" height="80" fill="#90CAF9" stroke="#1976D2" stroke-width="2" rx="5"/>
-    <text x="400" y="200" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1">
-      🧠 Model Learns
+    <text x="400" y="200" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1" font-family="Arial, sans-serif">
+      Model Learns
     </text>
-    <text x="400" y="220" font-size="11" text-anchor="middle" fill="#333">
-      • English grammar
+    <text x="400" y="220" font-size="11" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
+      English grammar
     </text>
-    <text x="400" y="235" font-size="11" text-anchor="middle" fill="#333">
-      • Vocabulary
+    <text x="400" y="235" font-size="11" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
+      Vocabulary
     </text>
-    <text x="400" y="250" font-size="11" text-anchor="middle" fill="#333">
-      • Reasoning & logic
+    <text x="400" y="250" font-size="11" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
+      Reasoning
     </text>
 
     <!-- Arrow -->
@@ -58,23 +71,23 @@
 
     <!-- Output -->
     <rect x="570" y="175" width="150" height="80" fill="#64B5F6" stroke="#1976D2" stroke-width="2" rx="5"/>
-    <text x="645" y="200" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1">
-      ✅ Result
+    <text x="645" y="200" font-size="14" font-weight="bold" text-anchor="middle" fill="#0D47A1" font-family="Arial, sans-serif">
+      Result
     </text>
-    <text x="645" y="220" font-size="12" text-anchor="middle" fill="#333">
+    <text x="645" y="220" font-size="12" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
       Language Model
     </text>
-    <text x="645" y="238" font-size="11" text-anchor="middle" fill="#666">
+    <text x="645" y="238" font-size="11" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
       Understands English
     </text>
-    <text x="645" y="252" font-size="11" text-anchor="middle" fill="#666">
+    <text x="645" y="252" font-size="11" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
       Loss: ~2.3
     </text>
   </g>
 
   <!-- Arrow between stages -->
   <path d="M 400 285 L 400 325" stroke="#FF6F00" stroke-width="4" fill="none" marker-end="url(#arroworange)"/>
-  <text x="420" y="310" font-size="13" font-weight="bold" fill="#E65100">
+  <text x="480" y="310" font-size="13" font-weight="bold" fill="#E65100" font-family="Arial, sans-serif">
     Transfer Learning
   </text>
 
@@ -84,25 +97,25 @@
     <rect x="50" y="330" width="700" height="180" fill="#FFF3E0" stroke="#F57C00" stroke-width="3" rx="10"/>
 
     <!-- Stage Label -->
-    <text x="400" y="360" font-size="20" font-weight="bold" text-anchor="middle" fill="#E65100">
+    <text x="400" y="360" font-size="20" font-weight="bold" text-anchor="middle" fill="#E65100" font-family="Arial, sans-serif">
       Stage 2: Code Fine-tuning
     </text>
-    <text x="400" y="385" font-size="14" text-anchor="middle" fill="#666">
+    <text x="400" y="385" font-size="14" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
       Duration: 30-60 minutes on M1 Max
     </text>
 
     <!-- Input -->
     <rect x="80" y="405" width="150" height="80" fill="#FFE0B2" stroke="#F57C00" stroke-width="2" rx="5"/>
-    <text x="155" y="430" font-size="14" font-weight="bold" text-anchor="middle" fill="#BF360C">
-      💻 Input Data
+    <text x="155" y="430" font-size="14" font-weight="bold" text-anchor="middle" fill="#BF360C" font-family="Arial, sans-serif">
+      Input Data
     </text>
-    <text x="155" y="450" font-size="12" text-anchor="middle" fill="#333">
+    <text x="155" y="450" font-size="12" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
       Bash Scripts
     </text>
-    <text x="155" y="468" font-size="11" text-anchor="middle" fill="#666">
+    <text x="155" y="468" font-size="11" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
       100+ scripts
     </text>
-    <text x="155" y="482" font-size="11" text-anchor="middle" fill="#666">
+    <text x="155" y="482" font-size="11" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
       3,400+ lines
     </text>
 
@@ -111,17 +124,17 @@
 
     <!-- Process -->
     <rect x="320" y="405" width="160" height="80" fill="#FFCC80" stroke="#F57C00" stroke-width="2" rx="5"/>
-    <text x="400" y="430" font-size="14" font-weight="bold" text-anchor="middle" fill="#BF360C">
-      🔧 Model Adapts
+    <text x="400" y="430" font-size="14" font-weight="bold" text-anchor="middle" fill="#BF360C" font-family="Arial, sans-serif">
+      Model Adapts
     </text>
-    <text x="400" y="450" font-size="11" text-anchor="middle" fill="#333">
-      • Bash syntax
+    <text x="400" y="450" font-size="11" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
+      Bash syntax
     </text>
-    <text x="400" y="465" font-size="11" text-anchor="middle" fill="#333">
-      • Code patterns
+    <text x="400" y="465" font-size="11" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
+      Code patterns
     </text>
-    <text x="400" y="480" font-size="11" text-anchor="middle" fill="#333">
-      • Best practices
+    <text x="400" y="480" font-size="11" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
+      Best practices
     </text>
 
     <!-- Arrow -->
@@ -129,33 +142,23 @@
 
     <!-- Output -->
     <rect x="570" y="405" width="150" height="80" fill="#FFB74D" stroke="#F57C00" stroke-width="2" rx="5"/>
-    <text x="645" y="430" font-size="14" font-weight="bold" text-anchor="middle" fill="#BF360C">
-      🎉 Result
+    <text x="645" y="430" font-size="14" font-weight="bold" text-anchor="middle" fill="#BF360C" font-family="Arial, sans-serif">
+      Result
     </text>
-    <text x="645" y="450" font-size="12" text-anchor="middle" fill="#333">
+    <text x="645" y="450" font-size="12" text-anchor="middle" fill="#333" font-family="Arial, sans-serif">
       Code Generator
     </text>
-    <text x="645" y="468" font-size="11" text-anchor="middle" fill="#666">
-      English → Code
+    <text x="645" y="468" font-size="11" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
+      English to Code
     </text>
-    <text x="645" y="482" font-size="11" text-anchor="middle" fill="#666">
+    <text x="645" y="482" font-size="11" text-anchor="middle" fill="#666" font-family="Arial, sans-serif">
       Loss: ~1.0
     </text>
   </g>
 
   <!-- Final Result -->
-  <rect x="200" y="530" width="400" height="50" fill="#C8E6C9" stroke="#388E3C" stroke-width="3" rx="10"/>
-  <text x="400" y="555" font-size="16" font-weight="bold" text-anchor="middle" fill="#1B5E20">
-    🚀 Final Model: Understands English AND Generates Code!
+  <rect x="150" y="530" width="500" height="50" fill="#C8E6C9" stroke="#388E3C" stroke-width="3" rx="10"/>
+  <text x="400" y="560" font-size="16" font-weight="bold" text-anchor="middle" fill="#1B5E20" font-family="Arial, sans-serif">
+    Final Model: Understands English AND Generates Code!
   </text>
-
-  <!-- Arrow markers -->
-  <defs>
-    <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#1976D2" />
-    </marker>
-    <marker id="arroworange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L0,6 L9,3 z" fill="#F57C00" />
-    </marker>
-  </defs>
 </svg>
