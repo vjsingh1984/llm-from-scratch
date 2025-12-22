@@ -23,6 +23,7 @@ data/raw/
 data/language/raw/
 data/downloads/
 data/bash/raw/repos/
+data/bash/raw/additional_repos/
 advanced-code-model/data/bash/raw/repos/
 
 # Generated images (multimodal stage)
@@ -159,6 +160,21 @@ wandb/
 *.tar.gz
 *.rar
 *.7z
+
+# ============================================================
+# Additional Large Files
+# ============================================================
+# Tokenizer backup
+data/tokenizer/*.backup
+
+# HuggingFace cache
+.cache/
+huggingface/
+
+# Model subdirectories with checkpoints
+models/finetuned/*.pth
+models/pretrained/*.pth
+models/stage*/*.pth
 
 # ============================================================
 # What SHOULD be committed (for reference):

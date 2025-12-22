@@ -1,0 +1,35 @@
+# Stage 3: Tool Calling Configuration
+
+stage: tools
+description: Train model to use function calling
+
+# Base model
+checkpoint: models/code_model_best.pth
+
+# Training settings (even lower LR)
+batch_size: 2
+num_epochs: 3
+learning_rate: 3e-6
+warmup_steps: 500
+weight_decay: 0.1
+grad_clip: 1.0
+
+# Data
+data_file: tool_train.npy
+val_file: tool_val.npy
+data_dir: data/processed
+
+# Optimization
+use_compile: true
+use_amp: true
+gradient_checkpointing: false
+
+# Output
+output_dir: models
+checkpoint_name: tool_model
+save_every_n_steps: 250
+eval_every_n_steps: 125
+
+# Logging
+log_level: INFO
+use_wandb: false

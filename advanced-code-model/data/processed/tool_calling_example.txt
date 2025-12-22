@@ -1,0 +1,19 @@
+<|user|>Write a Python function to calculate factorial and test it with n=5<|end|>
+<|assistant|><|tool_call|>
+Tool: execute_python
+Arguments: {"code": "def factorial(n):\n    if n <= 1:\n        return 1\n    return n * factorial(n-1)\n\nprint(factorial(5))"}
+<|end|>
+<|tool_result|>
+Tool: execute_python
+Output: 120
+<|end|>
+<|assistant|>Here's a factorial function:
+
+```python
+def factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n-1)
+```
+
+Tested with n=5, result: 120 ✓<|end|>

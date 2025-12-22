@@ -1,0 +1,32 @@
+# Stage 1: Language Pretraining Configuration
+
+stage: language
+description: Train on TinyStories for basic language understanding
+
+# Training settings
+batch_size: 2
+num_epochs: 3
+learning_rate: 1e-4
+warmup_steps: 2000
+weight_decay: 0.1
+grad_clip: 1.0
+
+# Data
+data_file: train_large.npy
+val_file: val_large.npy
+data_dir: data/processed
+
+# Optimization
+use_compile: true
+use_amp: true
+gradient_checkpointing: false
+
+# Output
+output_dir: models
+checkpoint_name: language_model
+save_every_n_steps: 1000
+eval_every_n_steps: 500
+
+# Logging
+log_level: INFO
+use_wandb: false

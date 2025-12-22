@@ -46,7 +46,8 @@ def get_device():
         return torch.device('cpu')
 
 
-def load_datasets(stage: str, data_dir: Path, device: torch.device) -> Tuple[torch.Tensor, torch.Tensor]:
+def load_datasets(stage: str, data_dir: Path, device: torch.device,
+                  custom_train_file: str = None, custom_val_file: str = None) -> Tuple[torch.Tensor, torch.Tensor]:
     """
     Load training and validation datasets.
 
@@ -54,6 +55,8 @@ def load_datasets(stage: str, data_dir: Path, device: torch.device) -> Tuple[tor
         stage: 'language', 'code', 'tool_calling', 'multimodal', or 'domain'
         data_dir: Path to processed data directory
         device: Device (kept on CPU to save memory)
+        custom_train_file: Optional custom training data file name
+        custom_val_file: Optional custom validation data file name
 
     Returns:
         Train and validation tensors (on CPU)
@@ -71,6 +74,24 @@ def load_datasets(stage: str, data_dir: Path, device: torch.device) -> Tuple[tor
         raise ValueError(f"Unknown stage: {stage}. Valid: {list(stage_data_map.keys())}")
 
     train_file, val_file = stage_data_map[stage]
+
+    # Override with custom files if provided
+    if custom_train_file:
+        train_file = custom_train_file
+        print(f"Using custom training file: {train_file}")
+        # If custom train file but no custom val file, try to infer
+        if not custom_val_file:
+            # Try to infer val file from train file (e.g., code_train_extended.npy -> code_val_extended.npy)
+            if "_train" in train_file:
+                inferred_val = train_file.replace("_train", "_val")
+                if (data_dir / inferred_val).exists():
+                    val_file = inferred_val
+                    print(f"Inferred validation file: {val_file}")
+
+    if custom_val_file:
+        val_file = custom_val_file
+        print(f"Using custom validation file: {val_file}")
+
     train_path = data_dir / train_file
     val_path = data_dir / val_file
 
@@ -376,8 +397,8 @@ def main():
                         help="Batch size (reduce if OOM)")
     parser.add_argument("--num-epochs", type=int, default=3,
                         help="Number of epochs")
-    parser.add_argument("--steps-per-epoch", type=int, default=500,
-                        help="Training steps per epoch")
+    parser.add_argument("--steps-per-epoch", type=int, default=0,
+                        help="Training steps per epoch (0 = auto-calculate from dataset size)")
     parser.add_argument("--learning-rate", type=float, default=6e-5,
                         help="Learning rate")
     parser.add_argument("--warmup-steps", type=int, default=100,
@@ -408,6 +429,12 @@ def main():
                         help="Convolution kernel size for Mamba")
     parser.add_argument("--hybrid-local-window", type=int, default=256,
                         help="Local attention window size for hybrid architecture")
+
+    # Custom data file option
+    parser.add_argument("--data-file", type=str, default=None,
+                        help="Custom training data file (e.g., code_train_extended.npy). Overrides default for the stage.")
+    parser.add_argument("--val-file", type=str, default=None,
+                        help="Custom validation data file. If not specified, uses default or infers from --data-file")
 
     args = parser.parse_args()
 
@@ -482,8 +509,14 @@ def main():
     print()
 
     # Load datasets
-    train_data, val_data = load_datasets(args.stage, data_dir, device)
+    train_data, val_data = load_datasets(args.stage, data_dir, device, args.data_file, args.val_file)
     print()
+
+    # Auto-calculate steps per epoch if not specified
+    if args.steps_per_epoch <= 0:
+        args.steps_per_epoch = len(train_data) // args.batch_size
+        print(f"Auto-calculated steps per epoch: {args.steps_per_epoch:,} ({len(train_data):,} samples / {args.batch_size} batch size)")
+        print()
 
     # Create optimizer
     optimizer = torch.optim.AdamW(

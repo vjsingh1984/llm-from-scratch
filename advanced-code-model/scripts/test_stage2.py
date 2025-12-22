@@ -16,6 +16,45 @@ from src.model import create_model
 from src.model.config import get_config
 
 
+def fix_tokenizer_spacing(text):
+    """Fix extra spaces added by tokenizer decode.
+
+    The tokenizer was trained on natural language, so it adds spaces
+    between tokens. This function cleans up code-specific patterns.
+    """
+    import re
+
+    # Fix common code patterns
+    fixes = [
+        (r'# !/bin/', '#!/bin/'),           # shebang
+        (r'# !', '#!'),                      # shebang start
+        (r'\( \)', '()'),                    # empty parens
+        (r'\[ \[', '[['),                    # bash [[
+        (r'\] \]', ']]'),                    # bash ]]
+        (r' \. ', '.'),                      # method access
+        (r' \( ', '('),                      # opening paren
+        (r' \) ', ') '),                     # closing paren
+        (r' : ', ':'),                       # colon
+        (r' ;', ';'),                        # semicolon
+        (r' , ', ', '),                      # comma
+        (r' / ', '/'),                       # path separator
+        (r'" \$ ', '"$'),                    # variable in string
+        (r' "', '"'),                        # quote spacing
+        (r'" ', '"'),                        # quote spacing
+        (r'\$ \{', '${'),                    # bash variable
+        (r'\} \}', '}}'),                    # bash closing
+        (r' = ', '='),                       # assignment (be careful)
+        (r' \+ ', '+'),                      # operators
+        (r' - ', '-'),                       # minus
+    ]
+
+    result = text
+    for pattern, replacement in fixes:
+        result = re.sub(pattern, replacement, result)
+
+    return result
+
+
 def generate(model, tokenizer, prompt, max_tokens=80, temperature=0.7, device='mps'):
     """Generate code from prompt."""
     model.eval()
@@ -37,7 +76,9 @@ def generate(model, tokenizer, prompt, max_tokens=80, temperature=0.7, device='m
             # Append
             input_ids = torch.cat([input_ids, next_token.unsqueeze(0)], dim=1)
 
-    return tokenizer.decode(input_ids[0].tolist())
+    # Decode and fix spacing
+    raw_output = tokenizer.decode(input_ids[0].tolist())
+    return fix_tokenizer_spacing(raw_output)
 
 
 def main():

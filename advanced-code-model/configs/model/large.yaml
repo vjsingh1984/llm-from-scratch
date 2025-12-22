@@ -1,0 +1,23 @@
+# Large Model Configuration (RECOMMENDED)
+# ~1.6B parameters, production quality
+
+name: large
+vocab_size: 32000
+
+# Model dimensions
+d_model: 1600
+n_layers: 32
+n_heads: 25
+d_ff: 6400
+
+# Sequence settings
+max_seq_len: 4096
+
+# Regularization
+dropout: 0.0
+
+# Architecture options
+use_rmsnorm: true
+use_rope: true
+
+# Estimated memory: ~12GB

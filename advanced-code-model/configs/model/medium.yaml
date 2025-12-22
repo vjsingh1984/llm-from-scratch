@@ -1,0 +1,23 @@
+# Medium Model Configuration
+# ~150M parameters, for development
+
+name: medium
+vocab_size: 32000
+
+# Model dimensions
+d_model: 768
+n_layers: 12
+n_heads: 12
+d_ff: 3072
+
+# Sequence settings
+max_seq_len: 1024
+
+# Regularization
+dropout: 0.0
+
+# Architecture options
+use_rmsnorm: true
+use_rope: true
+
+# Estimated memory: ~4GB

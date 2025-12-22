@@ -1,0 +1,123 @@
+# Docker Compose for Code Generation API
+# Local development and testing setup
+
+version: '3.8'
+
+services:
+  # ============================================================
+  # Main API Service
+  # ============================================================
+  api:
+    build:
+      context: .
+      target: production
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount models directory (don't include in image)
+      - ./models:/app/models:ro
+      - ./data/tokenizer:/app/data/tokenizer:ro
+    environment:
+      - MODEL_PATH=/app/models/code_model_best.pth
+      - TOKENIZER_PATH=/app/data/tokenizer/tokenizer.json
+      - PORT=8000
+      - RATE_LIMIT=60
+      - API_KEYS_ENABLED=false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  # ============================================================
+  # Redis Cache (optional)
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ============================================================
+  # Prometheus Metrics (optional)
+  # ============================================================
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    depends_on:
+      - api
+
+  # ============================================================
+  # Grafana Dashboard (optional)
+  # ============================================================
+  grafana:
+    image: grafana/grafana:10.0.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
+
+  # ============================================================
+  # Development Container
+  # ============================================================
+  dev:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - ./models:/app/models:ro
+    environment:
+      - MODEL_PATH=/app/models/code_model_best.pth
+      - TOKENIZER_PATH=/app/data/tokenizer/tokenizer.json
+    command: sleep infinity  # Keep container running for exec
+    profiles:
+      - dev
+
+  # ============================================================
+  # Test Runner
+  # ============================================================
+  test:
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/app
+      - ./models:/app/models:ro
+    environment:
+      - MODEL_PATH=/app/models/code_model_best.pth
+      - TOKENIZER_PATH=/app/data/tokenizer/tokenizer.json
+    command: python -m pytest tests/ -v
+    profiles:
+      - test
+
+volumes:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  default:
+    name: code-gen-network

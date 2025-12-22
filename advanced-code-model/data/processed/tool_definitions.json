@@ -1,0 +1,41 @@
+{
+  "execute_python": {
+    "description": "Execute Python code and return the output",
+    "parameters": {
+      "code": "string - The Python code to execute"
+    }
+  },
+  "execute_bash": {
+    "description": "Execute bash command and return the output",
+    "parameters": {
+      "command": "string - The bash command to execute"
+    }
+  },
+  "search_docs": {
+    "description": "Search Python documentation for a topic",
+    "parameters": {
+      "query": "string - The search query"
+    }
+  },
+  "analyze_code": {
+    "description": "Analyze code for errors, complexity, or patterns",
+    "parameters": {
+      "code": "string - The code to analyze",
+      "analysis_type": "string - Type: 'syntax', 'complexity', 'security'"
+    }
+  },
+  "run_tests": {
+    "description": "Run unit tests for the given code",
+    "parameters": {
+      "code": "string - The code with test cases",
+      "test_framework": "string - Framework: 'pytest', 'unittest'"
+    }
+  },
+  "debug_code": {
+    "description": "Debug code and suggest fixes",
+    "parameters": {
+      "code": "string - The buggy code",
+      "error": "string - The error message"
+    }
+  }
+}

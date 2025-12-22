@@ -1,0 +1,23 @@
+# XLarge Model Configuration
+# ~7B parameters, best quality
+
+name: xlarge
+vocab_size: 32000
+
+# Model dimensions
+d_model: 2048
+n_layers: 40
+n_heads: 32
+d_ff: 8192
+
+# Sequence settings
+max_seq_len: 8192
+
+# Regularization
+dropout: 0.0
+
+# Architecture options
+use_rmsnorm: true
+use_rope: true
+
+# Estimated memory: ~24GB

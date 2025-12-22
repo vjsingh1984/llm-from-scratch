@@ -1,0 +1,42 @@
+# Stage 4: RLHF Configuration
+
+stage: rlhf
+description: Align model with human preferences using PPO
+
+# Base models
+policy_checkpoint: models/tool_model_best.pth
+reward_checkpoint: models/reward_model.pth
+
+# PPO settings
+ppo_epochs: 4
+ppo_clip: 0.2
+value_clip: 0.2
+kl_penalty: 0.02
+entropy_bonus: 0.01
+
+# Training settings
+batch_size: 4
+num_epochs: 1
+learning_rate: 1e-6
+warmup_steps: 100
+weight_decay: 0.0
+grad_clip: 0.5
+
+# Data
+data_file: preferences.json
+data_dir: data/processed
+
+# Optimization
+use_compile: false  # PPO can be tricky with compile
+use_amp: true
+gradient_checkpointing: true
+
+# Output
+output_dir: models
+checkpoint_name: rlhf_model
+save_every_n_steps: 100
+eval_every_n_steps: 50
+
+# Logging
+log_level: INFO
+use_wandb: false

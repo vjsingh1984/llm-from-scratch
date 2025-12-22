@@ -1,0 +1,35 @@
+# Stage 2: Code Fine-tuning Configuration
+
+stage: code
+description: Fine-tune on code data for code generation
+
+# Base model
+checkpoint: models/language_model_best.pth
+
+# Training settings (lower LR for fine-tuning)
+batch_size: 2
+num_epochs: 5
+learning_rate: 5e-6
+warmup_steps: 1000
+weight_decay: 0.1
+grad_clip: 1.0
+
+# Data
+data_file: code_train_large.npy
+val_file: code_val_large.npy
+data_dir: data/processed
+
+# Optimization
+use_compile: true
+use_amp: true
+gradient_checkpointing: false
+
+# Output
+output_dir: models
+checkpoint_name: code_model
+save_every_n_steps: 500
+eval_every_n_steps: 250
+
+# Logging
+log_level: INFO
+use_wandb: false
