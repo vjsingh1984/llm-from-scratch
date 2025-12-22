@@ -4,6 +4,28 @@
 
 ---
 
+## Directory Structure
+
+Scripts are organized into numbered subdirectories by stage:
+
+```
+scripts/
+├── 0_setup/          # Data download and environment setup
+├── 1_tokenizer/      # Tokenizer training
+├── 2_pretrain/       # Language pretraining (Stage 1)
+├── 3_finetune/       # Code fine-tuning (Stage 2)
+├── 4_tools/          # Tool calling training
+├── 5_rlhf/           # RLHF alignment
+├── 6_deploy/         # Deployment and serving
+├── test/             # Testing scripts
+├── utils/            # Utility scripts and domain generators
+└── domains/          # Domain-specific data generators
+```
+
+Each subdirectory contains a README with detailed instructions.
+
+---
+
 ## Quick Reference
 
 ```
